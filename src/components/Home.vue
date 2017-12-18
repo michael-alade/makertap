@@ -18,7 +18,6 @@ export default {
       { name: 'keywords', content: 'Makers, creators, motivation, entrepreneurship' }
     ],
     link: [
-      { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.css' },
       { rel: 'favicon', href: '/static/favicon.ico' }
     ]
   },

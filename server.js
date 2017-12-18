@@ -66,7 +66,8 @@ app.get('*', (req, res) => {
             ${style.text()}
             ${script.text()}
             ${noscript.text()}
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.css">
+            <link rel="stylesheet" href="/static/css/uikit.min.css" />
+            <link rel="stylesheet" href="/static/css/custom-style.css" />
           </head>
         `)
         html = index.replace('<div id=app></div>', html)
