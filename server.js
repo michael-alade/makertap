@@ -58,6 +58,7 @@ app.get('*', (req, res) => {
         let concat1 = index.slice(0, firstIndex + 6)
         let concat2 = index.slice(secondIndex)
         let newIndex = concat1.concat(concat2)
+        index = newIndex.replace('<html>', '<html data-vue-meta-server-rendered>')
         index = newIndex.replace('<head></head>', `
           <head>
             ${meta.text()}
@@ -66,6 +67,8 @@ app.get('*', (req, res) => {
             ${style.text()}
             ${script.text()}
             ${noscript.text()}
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+            <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
             <link rel="stylesheet" href="/static/css/uikit.min.css" />
             <link rel="stylesheet" href="/static/css/custom-style.css" />
           </head>

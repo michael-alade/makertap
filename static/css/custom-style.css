@@ -419,6 +419,7 @@
 /* Live streams view */
 .live-streams {
     margin-top: 15px;
+    margin-bottom: 20px;
 }
 input:focus {
     outline-offset: none;

@@ -1,13 +1,15 @@
 <template>
-  <div id="app" class="ui basic segment">
-    <h1 class="ui header">App Component</h1>
-    <a href="/" class="ui button">Home</a>
-    <a href="/about" class="ui button">About</a>
+  <div>
+    <navbar />
     <router-view></router-view>
   </div>
 </template>
 <script>
+import Navbar from './components/views/navbar'
 export default {
+  components: {
+    Navbar
+  },
   name: 'App',
   metaInfo: {
     title: 'MakerTap',

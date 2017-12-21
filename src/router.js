@@ -2,8 +2,9 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Meta from 'vue-meta'
 
-import Home from './components/Home'
-import About from './components/About'
+import Home from './components/containers/Home'
+import Browse from './components/containers/browse'
+import About from './components/containers/About'
 
 Vue.use(VueRouter)
 Vue.use(Meta, {
@@ -17,6 +18,7 @@ const router = new VueRouter({
   mode: 'history',
   routes: [
     { path: '/', component: Home },
+    { path: '/browse', component: Browse },
     { path: '/about', component: About },
     { path: '*', redirect: '/' }
   ]
