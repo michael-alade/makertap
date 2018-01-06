@@ -4,7 +4,7 @@
             <h3 style="font-family: 'Montserrat', sans-serif;">Live Now</h3>
             <div class="uk-flex-row uk-grid-small uk-child-width-expand@s" uk-grid>
                 <div v-for="i in 4" :key="i" class="uk-width-1-5@m uk-width-1-2@s">
-                    <VideoThumb />
+                    <!-- <VideoThumb video= /> -->
                 </div>
             </div>
             <div class="view-more">

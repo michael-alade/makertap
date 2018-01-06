@@ -9,12 +9,14 @@ export default new Vuex.Store({
   state: {
     currentUser: null,
     mine: null,
-    videos: null
+    videos: null,
+    videoSearchLoading: false
   },
   actions,
   mutations,
   getters: {
     getCurrentUser (state) { return state.currentUser },
+    videoSearchLoading (state) { return state.videoSearchLoading },
     getMine (state) { return state.mine }
   }
 })

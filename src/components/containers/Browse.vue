@@ -1,7 +1,8 @@
 <template>
     <div class="">
         <filters />
-        <filter-result />
+        <no-result v-if="!videos.length" />
+        <filter-result v-if="videos.length" />
         <footer-view />
     </div>
 </template>
@@ -10,6 +11,7 @@
 import Filters from '../views/filters'
 import FilterResult from '../views/filter-result'
 import FooterView from '../views/footer'
+import NoResult from '../views/no-result'
 
 export default {
   preFetch ({ store }) {
@@ -31,8 +33,17 @@ export default {
   },
   components: {
     Filters,
+    NoResult,
     FooterView,
     FilterResult
+  },
+  computed: {
+    videos () {
+      if (this.$store.state.videos && this.$store.state.videos.data) {
+        return this.$store.state.videos.data
+      }
+      return []
+    }
   }
 }
 </script>

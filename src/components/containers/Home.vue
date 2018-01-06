@@ -8,9 +8,9 @@
 
 <script>
 import Hero from '../views/hero'
-import MobileDetect from 'mobile-detect'
 import Featured from '../views/featured-streams'
 import FooterView from '../views/footer'
+
 export default {
   components: {
     Hero,

@@ -3,7 +3,8 @@ import VueRouter from 'vue-router'
 import Meta from 'vue-meta'
 
 import Home from './components/containers/Home'
-import Browse from './components/containers/browse'
+import Browse from './components/containers/Browse'
+import Profile from './components/containers/Profile'
 import About from './components/containers/About'
 
 Vue.use(VueRouter)
@@ -20,6 +21,7 @@ const router = new VueRouter({
     { path: '/', component: Home },
     { path: '/browse', component: Browse },
     { path: '/about', component: About },
+    { path: '/user/:username', component: Profile },
     { path: '*', redirect: '/' }
   ]
 })

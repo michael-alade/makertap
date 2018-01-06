@@ -3,6 +3,7 @@ const fs = require('fs')
 const bodyParser = require('body-parser')
 const path = require('path')
 const dotenv = require('dotenv')
+const cors = require('cors')
 const routes = require('./server/routes')
 const code = fs.readFileSync(path.join(__dirname, './dist/server.js'), 'utf8')
 const renderer = require('vue-server-renderer').createBundleRenderer(code)
@@ -20,6 +21,7 @@ const getCurrentUser = () => {
   })
 }
 
+app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 // API
@@ -47,6 +49,7 @@ app.get('*', (req, res) => {
       context,
       (err, html) => {
         if (err) {
+          console.log(err, 'err')
           return res.sendStatus(500)
         }
         const {
@@ -71,6 +74,8 @@ app.get('*', (req, res) => {
             <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
             <link rel="stylesheet" href="/static/css/uikit.min.css" />
             <link rel="stylesheet" href="/static/css/custom-style.css" />
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplebar/2.5.1/simplebar.css" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/simplebar/2.5.1/simplebar.js"></script>
           </head>
         `)
         html = index.replace('<div id=app></div>', html)
