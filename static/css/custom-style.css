@@ -36,12 +36,13 @@
     border: none;
     color: #fff;
     text-decoration: none;
-    background: linear-gradient(to right, #00c9ff, #fd5d5d, #92fe9d);
+    background: #8686da;
+    /* background: linear-gradient(to right, #00c9ff, #fd5d5d, #92fe9d);
     background-size: 600% 600%;
     -webkit-animation: button-animated 20s ease infinite;
     -moz-animation: button-animated 20s ease infinite;
     -o-animation: button-animated 20s ease infinite;
-    animation: button-animated 20s ease infinite;
+    animation: button-animated 20s ease infinite; */
 }
 @-webkit-keyframes button-animated {
     0%{background-position:0% 50%}
@@ -85,6 +86,7 @@
 }
 .hero-text h1 {
     margin-bottom: 10px;
+    color: #8fafd2;
     font-family: 'Montserrat', sans-serif;
 }
 .hero-video-box {
@@ -95,7 +97,6 @@
     display: block;
 }
 #hero-video {
-    pointer-events: none;
     height: 315px;
     background: #000000;
     width: 100%;
@@ -175,6 +176,43 @@
     justify-content: center
 }
 
+.user-avatar:hover {
+    background: #eee !important;
+}
+
+.user-avatar:focus {
+    outline: none;
+    background: #eee !important;
+}
+
+.user-avatar {
+    height: 100%;
+    width: 110px;
+    cursor: pointer;
+    border: none;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.user-avatar span {
+    font-size: 12px;
+    color: #797777;
+    margin-left: 6px;
+    text-transform: uppercase;
+}
+
+.user-avatar img {
+    width: 35px;
+    height: 35px;
+    border-radius: 100%
+}
+
+.user-avatar-dropdown .text {
+    margin-left: 10px;
+}
+
 /* Social Networks Section */
 .social-networks {
     background-image: url('../images/hero-image-two.jpeg');
@@ -216,7 +254,7 @@
 /* Profile Section */
 .profile-section {
     padding-top: 20px;
-    margin-bottom: 50px;
+    /* margin-bottom: 50px; */
 }
 .live-stream-box {
     width: 100%;
@@ -621,3 +659,138 @@ input:focus {
       -webkit-transform: perspective(140px) rotateY(180deg);
               transform: perspective(140px) rotateY(180deg);
       opacity: 0; } }
+
+
+.auth-section {
+    width: 100%;
+    display: flex;
+    height: 100vh;
+    background: #eee;
+    justify-content: center;
+    align-items: center;
+    /* padding-top: 20px; */
+}
+
+.auth-section .uk-card {
+    width: 380px;
+    height: 562px;
+    padding: 20px !important;
+    background: #fff;
+}
+
+.auth-section .uk-card .logo-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.auth-section .uk-card form {
+    margin-top: 15px;
+}
+.auth-section .uk-card form .uk-form-label {
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.auth-section .uk-card form .captcha div {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-section .uk-card form .submit {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.featured {
+    width: 100%;
+    height: 99px;
+    display: flex;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,.08);
+}
+
+.featured .featured-avatar {
+    width: 97px;
+    background: #8e8282;
+    height: 100%;
+    border-radius: 8px 0px 0px 8px;
+}
+
+.featured .featured-avatar .uk-overlay {
+    border-radius: 8px 0px 0px 8px;
+    bottom: 0;
+    background: #0000002e;
+}
+
+.featured .featured-details {
+    padding: 10px;
+    flex: 1;
+    display: flex;
+    border: 1px solid #ecececc2;
+    border-radius: 0px 8px 8px 0px;
+}
+
+.featured .featured-details .name .username {
+    font-size: 12px;
+    margin-top: -4px;
+    flex: 1;
+    width: 180px;
+    color: #a9a9a9;
+}
+
+.featured .featured-details .name .description {
+    margin-top: 16px;
+    font-size: 13px;
+    display: flex;
+    /* flex: 1 */
+}
+
+.featured .featured-details .name .description div {
+    margin-right: 10px;
+}
+
+.featured .featured-details .name .description .fa {
+    font-size: 12px;
+}
+
+.featured .featured-details .action {
+    flex: 1;
+    margin-top: 4px;
+}
+
+/* .featured .featured-details .action:first-child {
+    
+} */
+
+.featured .featured-details .action button {
+    width: 100%;
+    background: #a2a2a2;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    margin-bottom: 10px;
+    padding: 7px;
+    border-radius: 8px;
+    font-size: 12px;
+    /* border: 1px solid #eee; */
+}
+
+.featured .featured-details .action button:focus {
+    outline: none;
+}
+
+.featured .featured-details .action .view {
+        /* background: #404040; */
+    color: #809ad9;
+    background: none;
+    border: 1px solid #809ad9;
+}
+
+
+

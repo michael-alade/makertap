@@ -4,7 +4,6 @@ const meta = app.$meta()
 export default (context) => {
   router.push(context.url)
   return new Promise((resolve, reject) => {
-    console.log(context.url, 'url to redirect to')
     router.onReady(() => {
       const matchedComponents = router.getMatchedComponents()
       if (!matchedComponents.length) {

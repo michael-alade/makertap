@@ -14,7 +14,7 @@ function verifyPassword (hashedPassword) {
  */
 function signup (req, res) {
   const body = req.body
-  if (body.firstName && body.lastName && body.username && body.email && body.password) {
+  if (body.fullName && body.username && body.email && body.password) {
     UserSchema.findOne({
       email: body.email,
       username: body.username
@@ -84,13 +84,13 @@ function login (req, res) {
             token
           })
         }
-        return res.status(400).json({
+        return res.status(401).json({
           status: 400,
           message: 'Authenication failed. Username or password is incorrect'
         })
       })
   } else {
-    return res.status(400).json({
+    return res.status(401).json({
       status: 400,
       message: 'Fill in the required fields'
     })

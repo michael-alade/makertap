@@ -1,7 +1,10 @@
 const express = require('express')
 const fs = require('fs')
 const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
 const path = require('path')
+const UserModel = require('./server/models/user.model')
+var jwt = require('jsonwebtoken')
 const dotenv = require('dotenv')
 const cors = require('cors')
 const routes = require('./server/routes')
@@ -14,13 +17,44 @@ const port = process.env.PORT || 3000
 
 dotenv.config()
 
-const getCurrentUser = () => {
-  return Promise.resolve({
-    username: 'acoshift',
-    id: 1
+const getCurrentUser = (cookies) => {
+  var token = cookies.mktoken
+  return new Promise((resolve, reject) => {
+    if (token) {
+      return jwt.verify(token, process.env.SECRET, (err, decoded) => {
+        if (err) {
+          return resolve({
+            error: err,
+            payload: null,
+            notAuthenticated: true
+          })
+        }
+        return UserModel.findById(decoded._id, (err, res) => {
+          if (err) {
+            return resolve({
+              error: err,
+              payload: null
+            })
+          }
+          if (!res) {
+            return resolve(null)
+          }
+          return resolve({
+            error: null,
+            payload: {
+              username: res.username,
+              fullName: res.fullName,
+              _id: res._id
+            }
+          })
+        })
+      })
+    }
+    resolve(null)
   })
 }
 
+app.use(cookieParser())
 app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -39,12 +73,17 @@ app.get('/me', (req, res) => {
   })
 })
 
+app.get('/logout', (req, res) => {
+  res.clearCookie('mktoken')
+  return res.redirect('/')
+})
+
 app.get('*', (req, res) => {
   if (req.url === '/favicon.ico') {
     return res.sendStatus(500)
   }
-  getCurrentUser().then((currentUser) => {
-    let context = { url: req.url, state: { currentUser } }
+  getCurrentUser(req.cookies).then((response) => {
+    let context = { url: req.url, state: { currentUser: null, isAuthenticated: false } }
     renderer.renderToString(
       context,
       (err, html) => {
@@ -52,6 +91,14 @@ app.get('*', (req, res) => {
           console.log(err, 'err')
           return res.sendStatus(500)
         }
+
+        if (response && response.payload && response.payload._id) {
+          context.state.currentUser = response.payload
+          context.state.isAuthenticated = true
+        } else {
+          context.state.isAuthenticated = false
+        }
+
         const {
           title, link, style, script, noscript, meta
         } = context.meta.inject()
@@ -76,6 +123,10 @@ app.get('*', (req, res) => {
             <link rel="stylesheet" href="/static/css/custom-style.css" />
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplebar/2.5.1/simplebar.css" />
             <script src="https://cdnjs.cloudflare.com/ajax/libs/simplebar/2.5.1/simplebar.js"></script>
+            <script src="/static/js/uikit.min.js"></script>
+            <script src="/static/js/uikit-icons.min.js"></script>
+            <script src="https://www.google.com/recaptcha/api.js?onload=vueRecaptchaApiLoaded&render=explicit" async defer>
+            </script>
           </head>
         `)
         html = index.replace('<div id=app></div>', html)

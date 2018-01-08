@@ -49,8 +49,8 @@
                                         <div class="overlay">
                                         </div>
                                     </div>
-                                    <hr class="uk-divider-icon">
-                                    <div class="extensions">
+                                    <!-- <hr class="uk-divider-icon"> -->
+                                    <!-- <div class="extensions">
                                         <h4>Extensions</h4>
                                         <div class="uk-flex-row uk-grid-small uk-child-width-expand@s">
                                             <div class="uk-width-1-5@m uk-width-1-2@s">
@@ -59,7 +59,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </li>
                                 <li class="">
                                     <div class="uk-flex-row uk-grid-small uk-child-width-expand@s" uk-grid>

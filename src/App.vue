@@ -1,7 +1,7 @@
 <template>
   <main>
-    <div class="uk-offcanvas-content" id="app" data-simplebar="init">
-      <navbar />
+    <div class="uk-offcanvas-content" id="app">
+      <navbar v-if="!hideNavbar" />
       <router-view></router-view>
     </div>
     <mobile-menu />
@@ -15,6 +15,17 @@ export default {
   components: {
     Navbar,
     MobileMenu
+  },
+  preFetch () {
+    console.log('user is logged in')
+  },
+  mounted () {
+    console.log(this.$store.state, 'state')
+  },
+  computed: {
+    hideNavbar () {
+      return this.$store.state.hideNavbar
+    }
   },
   name: 'App',
   metaInfo: {

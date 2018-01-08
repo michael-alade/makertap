@@ -7,9 +7,11 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    isAuthenticated: false,
     currentUser: null,
     mine: null,
     videos: null,
+    hideNavbar: false,
     videoSearchLoading: false
   },
   actions,

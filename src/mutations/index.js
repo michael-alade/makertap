@@ -1,4 +1,7 @@
 const mutations = {
+  hideNavbar: (state, payload) => {
+    state.hideNavbar = payload
+  },
   searchVideos: (state, payload) => {
     state.videos = payload
   },

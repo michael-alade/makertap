@@ -12,14 +12,14 @@
                     </div>
                     <div class="hero-video-box uk-visible@m">
                         <youtube id="hero-video" video-id="tVg_EtR__O4" player-width="100%" :player-vars="heroPlayer" player-height="315"></youtube>
-                        <div class="hero-video-overlay">
+                        <!-- <div class="hero-video-overlay">
                             <div class="overlay-top">
                                 <span class="fa fa-4x fa-pause"></span>
                             </div>
                             <div class="overlay-bottom">
                                 <span class="fa fa-2x fa-volume-up"></span>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -32,7 +32,7 @@ export default {
   data () {
     return {
       heroPlayer: {
-        autoplay: 1,
+        autoplay: 0,
         loop: 1
       }
     }
