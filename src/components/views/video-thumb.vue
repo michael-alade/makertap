@@ -10,7 +10,7 @@
         </div>
         <div class="uk-overlay overlay-view-more uk-position-cover">
             <span class="text-white">{{ video.description || 'Majestic sessions is all about urban music with a touch of artistic and cinematic views...' }}</span>
-            <a style="margin-top: 10px" href="#" class="uk-width-1-1 uk-button gradient-green-btn">Watch now</a>
+            <a style="margin-top: 10px" href="#" class="uk-width-1-1 uk-button theme-btn">Watch now</a>
         </div>
     </div>
 </template>

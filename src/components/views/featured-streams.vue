@@ -9,7 +9,7 @@
                 </div>
             </div>
             <div class="view-more">
-                <a href="#" style="margin-top: 30px" class="uk-button gradient-green-btn uk-button-round">View more</a>
+                <a href="#" style="margin-top: 30px" class="uk-button theme-btn uk-button-round">View more</a>
             </div>
         </div>
     </section>

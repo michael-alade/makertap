@@ -4,10 +4,10 @@
             <div class="uk-container" style="padding-top: 30px;padding-bottom: 20px">
                 <div class="uk-child-width-expand@s" uk-grid>
                     <div class="hero-text">
-                        <h1 class="">Be Motivated</h1>
-                        <span>Watch and learn from live streams of makers and creators building amazing products.</span>
-                        <div>
-                            <a href="#" style="margin-top: 20px" class="uk-button gradient-green-btn uk-button-round">How it works</a>
+                        <h1 :class="{ 'mobile': mobileDetect && mobileDetect.mobile() }">Be Motivated</h1>
+                        <p :class="{ 'mobile': mobileDetect && mobileDetect.mobile() }">Watch and learn from live streams of makers and creators building amazing products.</p>
+                        <div :class="{ 'mobile': mobileDetect && mobileDetect.mobile() }">
+                            <a href="#" style="margin-top: 20px" class="uk-button theme-btn uk-button-round">How it works</a>
                         </div>
                     </div>
                     <div class="hero-video-box uk-visible@m">
@@ -28,14 +28,19 @@
 </template>
 
 <script>
+import MobileDetect from 'mobile-detect'
 export default {
   data () {
     return {
+      mobileDetect: null,
       heroPlayer: {
         autoplay: 0,
         loop: 1
       }
     }
+  },
+  mounted () {
+    this.mobileDetect = new MobileDetect(window.navigator.userAgent)
   }
 }
 </script>

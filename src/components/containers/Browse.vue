@@ -20,7 +20,7 @@ export default {
   },
   metaInfo: {
     title: 'Find Insipiration and motivation video from startup founders and makers',
-    titleTemplate: '%s | MakerTap',
+    titleTemplate: '%s — MakerTap',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -42,7 +42,7 @@ export default {
       if (this.$store.state.videos && this.$store.state.videos.data) {
         return this.$store.state.videos.data
       }
-      return []
+      return [4, 5, 6]
     }
   }
 }

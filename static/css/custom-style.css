@@ -30,11 +30,13 @@
 
 /* Buttons */
 .uk-button-round {
-    border-radius: 20px;
+    border-radius: 8px;
 }
-.gradient-green-btn {
+.theme-btn {
     border: none;
     color: #fff;
+    font-size: 13px;
+    padding: 0px 21px;
     text-decoration: none;
     background: #8686da;
     /* background: linear-gradient(to right, #00c9ff, #fd5d5d, #92fe9d);
@@ -64,7 +66,7 @@
     50%{background-position:100% 50%}
     100%{background-position:0% 50%}
 }
-.gradient-green-btn:hover {
+.theme-btn:hover {
     color: #fff;
 }
 
@@ -84,11 +86,29 @@
     padding-top: 100px;
     font-family: 'Montserrat', sans-serif !important;
 }
+.hero-text h1.mobile {
+    text-align: center
+}
 .hero-text h1 {
     margin-bottom: 10px;
-    color: #8fafd2;
+    color: #6f6f6f;
     font-family: 'Montserrat', sans-serif;
 }
+
+.hero-text p {
+    margin: 0;
+}
+
+.hero-text p.mobile {
+    text-align: center;
+}
+
+.hero-text div.mobile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .hero-video-box {
     padding:0;
     position: relative;
@@ -237,13 +257,14 @@
     width: auto;
     position: fixed;
     bottom: 0;
-    left: 10px;
-    font-size: 16px;
+    right: 0;
+    font-size: 14px;
     cursor: pointer;
     text-decoration: none;
     height: auto;
+    border-radius: 8px 0px 0px;
     padding: 8px;
-    background: linear-gradient(to right, #00c9ff, #92fe9d);
+    background: #8fafd2;
 }
 .me:hover {
     color: #fff;
@@ -290,12 +311,12 @@
     display: none;
     background: rgba(0, 0, 0, 0.53);
 }
-.live-stream-box:hover > .overlay {
+/* .live-stream-box:hover > .overlay {
     display: block;
 }
 .live-stream-box:hover > .uk-overlay {
     display: none;
-}
+} */
 
 .live-stream-box-small {
     width: 100%;
@@ -347,6 +368,16 @@
 .start-live-stream button {
     width: 350px;
     background: red;
+}
+
+.go-live-btn {
+    float: right;
+    background-color: #809ad9;
+    color: #fff;
+    font-size: 11px;
+    padding: 0px 24px;
+    border-radius: 9px;
+    border: 1px solid transparent;
 }
 
 
@@ -512,10 +543,10 @@ input:focus {
     font-size: 13px;
 }
 .category.active {
-    border-bottom: 2px solid #ff4700;
+    border-bottom: 2px solid #8fafd2;
 }
 .category:hover {
-    border-bottom: 2px solid #ff4700;
+    border-bottom: 2px solid #8fafd2;
 }
 .filters-selected {
     display: flex;
@@ -537,20 +568,24 @@ input:focus {
     justify-content: center;
     font-size: 13px;
     color: #fff;
-    background: #f55858;
+    background: #8fafd2;
 }
 .filter-selected span {
     margin-left: 20px;
 }
 
+.uk-tab>.uk-active>a {
+    border-color: #6794c2 !important;
+}
+
 .filter-reset {
     background: #fff;
-    color: #f55858;
+    color: #8fafd2;
     height: 30px;
     display: flex;
     cursor: pointer;
     margin-right: 10px;
-    border: 1px solid #f55858;
+    border: 1px solid #8fafd2;
     width: 70px;
     display: flex;
     align-items: center;
@@ -792,5 +827,69 @@ input:focus {
     border: 1px solid #809ad9;
 }
 
+#welcome-modal .uk-modal-dialog {
+    width: 375px;
+}
 
+#welcome-modal .uk-modal-body {
+    padding: 20px 20px;
+}
 
+#welcome-modal .welcome {
+    margin-bottom: 10px;
+    line-height: 1;
+    text-align: center;
+}
+
+#welcome-modal .welcome .welcome-text {
+    text-align: center;
+    margin-bottom: 0;
+    color: #8686da;
+}
+
+#welcome-modal .welcome span {
+    font-size: 12px;
+    color: #969595;
+}
+
+#welcome-modal .channel-picture-box {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+#welcome-modal .channel-picture-box .channel-picture {
+    width: 125px;
+    cursor: pointer;
+    height: 125px;
+    position: relative;
+}
+
+#welcome-modal .channel-picture-box .channel-picture:hover > .overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+#welcome-modal .channel-picture-box .channel-picture .overlay {
+    position: absolute;
+    top: 0;
+    display: none;
+    background: rgba(0, 0, 0, 0.64);
+    width: inherit;
+
+    height: inherit;
+}
+
+#welcome-modal .channel-picture-box .channel-picture .overlay span {
+    color: #fff;
+}
+
+.uk-form-label {
+    color: #575260;
+    font-weight: 700;
+    font-size: 13px;
+}

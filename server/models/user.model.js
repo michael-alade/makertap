@@ -14,7 +14,15 @@ var user = new Schema({
   password: {
     type: String
   },
-  live: {
+  verified: {
+    type: Boolean,
+    default: false
+  },
+  welcome: {
+    type: Boolean,
+    default: false
+  },
+  channel: {
     type: Object
   }
 })

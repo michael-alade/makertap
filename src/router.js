@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Meta from 'vue-meta'
-import store from './store'
+// import store from './store'
 // import { deleteCookie } from './modules'
 
 import Home from './components/containers/Home'
@@ -45,14 +45,11 @@ const router = new VueRouter({
   ]
 })
 
-router.beforeEach((to, from, next) => {
-  if (!to.path.match(/user/)) {
-    return next()
-  }
-  if (!store.state.isAuthenticated) {
-    return next('/')
-  }
-  return next()
-})
+// router.beforeEach((to, from, next) => {
+//   if (!to.path.match(/user/)) {
+//     return next()
+//   }
+//   return next()
+// })
 
 export default router

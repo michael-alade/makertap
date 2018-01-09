@@ -8,15 +8,23 @@
             <a href="" class="uk-icon-button instagram-btn" uk-icon="icon: instagram"></a>
           </div>
         </section>
-        <a href="https://twitter.com/alademk" target="_blank" class="me text-white">
+        <a v-if="mobileDetect && !mobileDetect.mobile()" href="https://twitter.com/alademk" target="_blank" class="me text-white">
             <span class="uk-icon uk-icon-image" style="background-image: url('images/hero-image-three.jpeg');"></span> alademk
         </a>
     </div>
 </template>
 
 <script>
+import MobileDetect from 'mobile-detect'
 export default {
-
+  data () {
+    return {
+      mobileDetect: null
+    }
+  },
+  mounted () {
+    this.mobileDetect = new MobileDetect(window.navigator.userAgent)
+  }
 }
 </script>
 

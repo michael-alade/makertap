@@ -1,6 +1,7 @@
 var jwt = require('jsonwebtoken')
 var crypto = require('crypto-js')
 var UserSchema = require('../models/user.model')
+var ChannelSchema = require('../models/channel.model')
 var VideoSchema = require('../models/video.model')
 
 function verifyPassword (hashedPassword) {
@@ -113,13 +114,20 @@ function getUser (req, res) {
         message: 'User not found'
       })
     }
-    VideoSchema.find({
-      'creator.username': username
-    }).then(videos => {
-      if (videos) {
+    ChannelSchema.findOne({
+      'userId': user._id
+    }).then(channel => {
+      if (channel) {
         return res.status(200).json({
-          user: user,
-          videos: videos,
+          user: {
+            fullName: user.fullName,
+            username: user.username,
+            email: user.email,
+            verified: user.verified,
+            welcome: user.welcome,
+            channel: user.channel,
+            _id: user._id
+          },
           status: 200
         })
       }
@@ -137,8 +145,96 @@ function getUser (req, res) {
   })
 }
 
+/**
+ * createChannel
+ * @param {*} req
+ * @param {*} res
+ */
+function createChannel (req, res) {
+  let body = req.body
+  const userId = req.decoded._id
+  return ChannelSchema.findOne({ 'userId': userId }, (err, result) => {
+    if (err) {
+      return res.status(500).json({
+        message: 'Something went wrong'
+      })
+    }
+    if (result) {
+      return res.status(409).json({
+        message: 'A channel has been created under this user.'
+      })
+    }
+    return UserSchema.findById(userId, (err, user) => {
+      if (err) {
+        return res.status(500).json({
+          message: 'Something went wrong'
+        })
+      }
+      body.userId = userId
+      body.user = {
+        fullName: user.fullName,
+        username: user.username,
+        email: user.email,
+        verified: user.verified,
+        welcome: user.welcome,
+        channel: user.channel
+      }
+      return ChannelSchema.create(body, (err, channel) => {
+        if (err) {
+          return res.status(500).json({
+            message: 'Something went wrong'
+          })
+        }
+        if (err) {
+          return res.status(500).json({
+            message: 'Something went wrong'
+          })
+        }
+        user.channel = channel
+        user.save()
+        return res.status(200).json({
+          message: 'Channel created successfully'
+        })
+      })
+    })
+  })
+}
+
+/**
+ * updateChannel
+ * @param {*} req
+ * @param {*} res
+ */
+function updateChannel (req, res) {
+  const body = req.body
+  const channelId = req.params.channelId
+  const userId = req.decoded._id
+
+  return UserSchema.findById(userId, (err, user) => {
+    if (err) {
+      return res.status(500).json({
+        message: 'Something went wrong'
+      })
+    }
+    return ChannelSchema.findByIdAndUpdate(channelId, body, (err, channel) => {
+      if (err) {
+        return res.status(500).json({
+          message: 'Something went wrong'
+        })
+      }
+      user.welcome = true
+      user.save()
+      return res.status(202).json({
+        message: 'Channel successfully updated.'
+      })
+    })
+  })
+}
+
 module.exports = {
   signup,
   login,
-  getUser
+  getUser,
+  updateChannel,
+  createChannel
 }

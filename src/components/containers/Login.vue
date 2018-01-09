@@ -2,7 +2,7 @@
     <section class="auth-section">
         <div class="uk-card uk-card-default uk-card-body" :style="{ 'height': error.showError ? '477px' : '400px' }">
             <div class="logo-header">
-                <img src="/static/images/logo.png"/>
+                <img src="/static/images/logo-makertap.png"/>
             </div>
             <div v-if="error.showError" class="uk-alert-danger" uk-alert>
                 <a @click="error.showError = false" class="uk-alert-close" uk-close></a>
@@ -53,7 +53,7 @@ export default {
   },
   metaInfo: {
     title: 'Login',
-    titleTemplate: '%s | MakerTap',
+    titleTemplate: '%s — MakerTap',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },

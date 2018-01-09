@@ -10,10 +10,10 @@
                     <a href="/browse">BROWSE VIDEOS</a>
                 </li>
                 <li class="">
-                    <a href="">LOGIN</a>
+                    <a href="/login">LOGIN</a>
                 </li>
                 <li class="">
-                    <a href="">SIGNUP</a>
+                    <a href="/signup">SIGNUP</a>
                 </li>
             </ul>
         </div>

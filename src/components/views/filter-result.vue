@@ -2,8 +2,9 @@
     <section class="live-streams">
         <div class="uk-container">
             <div class="uk-flex-row uk-grid-small uk-child-width-expand@s uk-result" uk-grid>
-                <div class="uk-width-1-5@m uk-width-1-2@s" :class="{ 'uk-grid-margin': mobileDetect && mobileDetect.mobile() ? true : false }" v-for="video in videos" :key="video._id">
-                    <video-thumb v-if="video" :video="video" />
+                <div v-for="video in videos" :key="video._id" class="uk-width-1-3@m uk-width-1-2@s" :class="{ 'uk-grid-margin': mobileDetect && mobileDetect.mobile() ? true : false }">
+                    <channel-thumb />
+                    <!-- <video-thumb v-if="video" :video="video" /> -->
                 </div>
             </div>
             <div v-if="loading" class="uk-overlay-default uk-position-cover">
@@ -19,18 +20,20 @@
             </div>
         </div>
         <!-- <div class="view-more">
-            <a href="#" style="margin-top: 30px" class="uk-button gradient-green-btn uk-button-round">View more</a>
+            <a href="#" style="margin-top: 30px" class="uk-button theme-btn uk-button-round">View more</a>
         </div> -->
     </section>
 </template>
 
 <script>
 import MobileDetect from 'mobile-detect'
+import ChannelThumb from './channel-thumb'
 import VideoThumb from './video-thumb'
 
 export default {
   components: {
-    VideoThumb
+    VideoThumb,
+    ChannelThumb
   },
   data () {
     return {
@@ -48,7 +51,7 @@ export default {
       if (this.$store.state.videos && this.$store.state.videos.data) {
         return this.$store.state.videos.data
       }
-      return null
+      return [5, 8, 3, 4]
     }
   }
 }

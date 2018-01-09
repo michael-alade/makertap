@@ -2,7 +2,7 @@
     <section class="auth-section">
         <div class="uk-card uk-card-default uk-card-body" :style="{ 'height': error.showError && !form.verified ? '651px' : '562px' }">
             <div class="logo-header">
-                <img src="/static/images/logo.png"/>
+                <img src="/static/images/logo-makertap.png"/>
             </div>
             <div v-if="error.showError && !form.verified" class="uk-alert-danger" uk-alert>
                 <a @click="error.showError = false" class="uk-alert-close" uk-close></a>
@@ -29,7 +29,7 @@
                     <vue-recaptcha @expired="onExpired" @verify="onVerify" sitekey="6Lettj8UAAAAAA0ybPFIBheYu4jO8tLBJqM97Mvt"/>
                 </div>
                 <div class="uk-width-1-1@s submit">
-                    <button type="submit" class="uk-button uk-button-primary">Log in</button>
+                    <button type="submit" class="uk-button uk-button-primary">Signup</button>
                 </div>
             </form>
         </div>
@@ -64,7 +64,7 @@ export default {
   },
   metaInfo: {
     title: 'Signup',
-    titleTemplate: '%s | MakerTap',
+    titleTemplate: '%s — MakerTap',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },

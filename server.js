@@ -64,18 +64,23 @@ app.use('/api', router)
 
 app.use('/static', express.static(path.join(__dirname, './dist/static')))
 
-app.get('/me', (req, res) => {
-  getCurrentUser().then((currentUser) => {
-    res.json(currentUser)
-  }, (err) => {
-    console.error(err)
-    res.sendStatus(500)
-  })
-})
-
 app.get('/logout', (req, res) => {
   res.clearCookie('mktoken')
   return res.redirect('/')
+})
+
+app.get('/user/:username', (req, res, next) => {
+  return UserModel.findOne({
+    username: req.params.username
+  }, (err, user) => {
+    if (err) {
+      return next()
+    }
+    if (!user) {
+      return res.redirect('/')
+    }
+    return next()
+  })
 })
 
 app.get('*', (req, res) => {

@@ -1,6 +1,6 @@
 <template>
-  <main>
-      <button uk-toggle="target: #modal-close-outside" style="flex: 1" class="uk-button uk-button-danger" type="button">GO LIVE</button>
+  <div style="width: 100%">
+      <button uk-toggle="target: #modal-close-outside" style="flex: 1" class="uk-button go-live-btn" type="button">GO LIVE</button>
       <div id="modal-close-outside" uk-modal>
             <div class="uk-modal-dialog" style="width: 568px;">
                 <button class="uk-modal-close-default" type="button" uk-close></button>
@@ -49,7 +49,7 @@
                 </div>
             </div>
         </div>
-  </main>
+  </div>
 </template>
 
 <script>

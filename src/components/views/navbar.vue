@@ -5,8 +5,8 @@
                 <div class="uk-navbar-left">
                     <a class="uk-navbar-item uk-logo" href="/">
                         <img alt="Makertap Logo" style="width: 35px" src="/static/images/logo-makertap.png"/>
-                        <div style="margin-left: 9px;">Maker</div>
-                        <span>Tap</span>
+                        <div style="margin-left: 9px;">Makertap</div>
+                        <!-- <span>Tap</span> -->
                     </a>
                 </div>
                 <div class="uk-navbar-right uk-hidden@m">
@@ -25,7 +25,7 @@
                         </li>
                     </ul>
                     <div v-if="!isAuthenticated" class="uk-navbar-item">
-                        <a href="/signup" class="uk-button uk-button-round gradient-green-btn text-white">SIGNUP</a>
+                        <a href="/signup" class="uk-button uk-button-round theme-btn text-white">SIGNUP</a>
                     </div>
                     <div v-if="isAuthenticated" class="uk-navbar-item">
                         <button class="user-avatar">
@@ -58,7 +58,7 @@
                             <img src="https://avatar.tobi.sh/241.svg?text=MK"/>
                             <span> kolafas</span>
                         </div> -->
-                        <!-- <button class="uk-button uk-button-round gradient-green-btn text-white">SIGNUP</button> -->
+                        <!-- <button class="uk-button uk-button-round theme-btn text-white">SIGNUP</button> -->
                     </div>
                 </div>
             </nav>

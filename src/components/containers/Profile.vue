@@ -15,7 +15,7 @@
                                     </ul>
                                 </div>
                                 <div class="uk-width-1-2@m uk-visible@m" style="display: flex; margin-top: -10px;">
-                                    <button style="flex: 1; margin-right: 10px;" class="uk-button uk-button-default" disabled type="button">ADD VIDEO</button>
+                                    <!-- <button style="flex: 1; margin-right: 10px;" class="uk-button uk-button-default" disabled type="button">ADD VIDEO</button> -->
                                     <go-live-modal />
                                 </div>
                             </div>
@@ -32,8 +32,6 @@
                                                 <span class="fa fa-circle"></span> Offline
                                             </div>
                                         </div>
-                                        <div class="overlay">
-                                        </div>
                                     </div>
                                     <div class="live-stream-box-small uk-hidden@m">
                                         <div id="live-video">
@@ -45,8 +43,6 @@
                                             <div class="offline" style="display: none;">
                                                 <span class="fa fa-circle"></span> Offline
                                             </div>
-                                        </div>
-                                        <div class="overlay">
                                         </div>
                                     </div>
                                     <!-- <hr class="uk-divider-icon"> -->
@@ -64,7 +60,7 @@
                                 <li class="">
                                     <div class="uk-flex-row uk-grid-small uk-child-width-expand@s" uk-grid>
                                         <div class="uk-width-1-4@m uk-width-1-2@s">
-                                            <video-thumb :video="videos[0]" />
+                                            <video-thumb v-if="videos.length" :video="videos[0]" />
                                         </div>
                                     </div>
                                 </li>
@@ -74,18 +70,20 @@
                 </div>
         </section>
         <chat />
+        <welcome-modal :pageProfile="pageProfile" />
     </div>
 </template>
 
 <script>
 import VideoThumb from '../views/video-thumb'
+import WelcomeModal from '../views/welcome-modal'
 import GoLiveModal from '../views/go-live-modal'
 import Chat from '../views/chat'
 
 export default {
   metaInfo: {
     title: 'Home',
-    titleTemplate: '%s | MakerTap',
+    titleTemplate: '%s — MakerTap',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -96,13 +94,25 @@ export default {
       { rel: 'favicon', href: '/static/favicon.ico' }
     ]
   },
-  preFetch ({ store }) {
-    return store.dispatch('search')
+  preFetch ({ store, route }) {
+    return store.dispatch('getUser', route.params.username)
   },
   components: {
     VideoThumb,
     Chat,
+    WelcomeModal,
     GoLiveModal
+  },
+  mounted () {
+    console.log(this.$store.state.pageProfile, 'pageProfile')
+    const currentUser = this.$store.state.currentUser
+    const pageProfile = this.$store.state.pageProfile
+
+    if (currentUser._id === pageProfile._id && !pageProfile.welcome) {
+      window.UIkit.modal('#welcome-modal', {
+        'sel-close': ''
+      }).show()
+    }
   },
   computed: {
     videos () {
@@ -110,6 +120,12 @@ export default {
         return this.$store.state.videos.data
       }
       return []
+    },
+    pageProfile () {
+      if (this.$store.state.pageProfile && this.$store.state.pageProfile._id) {
+        return this.$store.state.pageProfile
+      }
+      return null
     }
   }
 }

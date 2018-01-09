@@ -5,6 +5,9 @@ const mutations = {
   searchVideos: (state, payload) => {
     state.videos = payload
   },
+  pageProfile: (state, payload) => {
+    state.pageProfile = payload
+  },
   searchLoading: (state, payload) => {
     state.videoSearchLoading = payload
   }

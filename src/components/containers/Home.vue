@@ -18,8 +18,8 @@ export default {
     FooterView
   },
   metaInfo: {
-    title: 'Home',
-    titleTemplate: '%s | MakerTap',
+    title: 'Makertap',
+    titleTemplate: '%s — Watch and learn from makers building businesses',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -27,7 +27,7 @@ export default {
       { name: 'keywords', content: 'Makers, creators, motivation, entrepreneurship' }
     ],
     link: [
-      { rel: 'favicon', href: '/static/favicon.ico' }
+      { rel: 'icon', href: '/static/images/favicon.ico?', type: 'image/x-icon' }
     ]
   },
   mounted () {
