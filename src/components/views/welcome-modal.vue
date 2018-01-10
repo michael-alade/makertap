@@ -4,12 +4,13 @@
         <div class="uk-modal-dialog uk-modal-body">
             <button class="uk-modal-close-outside" type="button" uk-close></button>
             <div class="welcome">
-                <h4 class="welcome-text">Welcome, Kolawole Alade</h4>
+                <h4 class="welcome-text">Welcome, {{ pageProfile.fullName }}</h4>
                 <span>Please take a minute to fill the below form</span>
             </div>
             <div class="channel-picture-box">
-                <div class="channel-picture">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"/>
+                <input type="file" hidden @change="setTemp" ref="uploadPicture">
+                <div @click="getPicture" class="channel-picture uk-cover-container">
+                    <img uk-cover :src="tempImgUrl"/>
                     <div class="overlay">
                         <span>Upload channel picture</span>
                     </div>
@@ -59,9 +60,11 @@ export default {
   data () {
     return {
       show: true,
+      tempImgUrl: '/static/images/profile-placeholder.png',
       form: {
         platform: 'youtube',
         specialty: 'internet-software',
+        channelPicture: null,
         embed: {},
         youtubeChannelId: '',
         twitchUsername: ''
@@ -71,6 +74,9 @@ export default {
   mounted () {
   },
   methods: {
+    getPicture () {
+      this.$refs.uploadPicture.click()
+    },
     submit () {
       const self = this
       if (this.form.platform === 'youtube') {
@@ -91,6 +97,20 @@ export default {
           'sel-close': ''
         }).hide()
       })
+    },
+    setTemp () {
+      const self = this
+      const reader = new window.FileReader()
+      const blob = this.$refs.uploadPicture.files[0]
+      console.log(typeof blob, 'typeof blob')
+      this.form.channelPicture = blob
+      if (blob) {
+        reader.onload = (e) => {
+          self.tempImgUrl = reader.result
+          self.form.channelPicture = reader.result
+        }
+        reader.readAsDataURL(blob)
+      }
     }
   }
 }

@@ -886,6 +886,7 @@ input:focus {
 
 #welcome-modal .channel-picture-box .channel-picture .overlay span {
     color: #fff;
+    font-size: 15px;
 }
 
 .uk-form-label {

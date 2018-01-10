@@ -21,30 +21,7 @@
                             </div>
                             <ul class="uk-switcher uk-margin">
                                 <li class="uk-active">
-                                    <div class="live-stream-box uk-visible@m">
-                                        <div id="live-video">
-                                        </div>
-                                        <div class="uk-overlay uk-position-top">
-                                            <div class="live-now">
-                                                <span class="fa fa-circle"></span> Live
-                                            </div>
-                                            <div class="offline" style="display: none;">
-                                                <span class="fa fa-circle"></span> Offline
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="live-stream-box-small uk-hidden@m">
-                                        <div id="live-video">
-                                        </div>
-                                        <div class="uk-overlay uk-position-top">
-                                            <div class="live-now">
-                                                <span class="fa fa-circle"></span> Live
-                                            </div>
-                                            <div class="offline" style="display: none;">
-                                                <span class="fa fa-circle"></span> Offline
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <stream-box :pageProfile="pageProfile" />
                                     <!-- <hr class="uk-divider-icon"> -->
                                     <!-- <div class="extensions">
                                         <h4>Extensions</h4>
@@ -70,13 +47,14 @@
                 </div>
         </section>
         <chat />
-        <welcome-modal :pageProfile="pageProfile" />
+        <welcome-modal v-if="pageProfile" :pageProfile="pageProfile" />
     </div>
 </template>
 
 <script>
 import VideoThumb from '../views/video-thumb'
 import WelcomeModal from '../views/welcome-modal'
+import StreamBox from '../views/stream-box'
 import GoLiveModal from '../views/go-live-modal'
 import Chat from '../views/chat'
 
@@ -100,15 +78,15 @@ export default {
   components: {
     VideoThumb,
     Chat,
+    StreamBox,
     WelcomeModal,
     GoLiveModal
   },
   mounted () {
-    console.log(this.$store.state.pageProfile, 'pageProfile')
     const currentUser = this.$store.state.currentUser
     const pageProfile = this.$store.state.pageProfile
 
-    if (currentUser._id === pageProfile._id && !pageProfile.welcome) {
+    if (currentUser && pageProfile && currentUser._id === pageProfile._id && !pageProfile.welcome) {
       window.UIkit.modal('#welcome-modal', {
         'sel-close': ''
       }).show()

@@ -2,6 +2,7 @@ var jwt = require('jsonwebtoken')
 var crypto = require('crypto-js')
 var UserSchema = require('../models/user.model')
 var ChannelSchema = require('../models/channel.model')
+var custom = require('../custom')
 var VideoSchema = require('../models/video.model')
 
 function verifyPassword (hashedPassword) {
@@ -125,7 +126,7 @@ function getUser (req, res) {
             email: user.email,
             verified: user.verified,
             welcome: user.welcome,
-            channel: user.channel,
+            channel: channel,
             _id: user._id
           },
           status: 200
@@ -214,6 +215,24 @@ function updateChannel (req, res) {
     if (err) {
       return res.status(500).json({
         message: 'Something went wrong'
+      })
+    }
+    if (body && body.channelPicture) {
+      return custom.uploadFile(body.channelPicture, {}, (err, image) => { // eslint-disable-line
+
+        body.channelPicture = image.secure_url
+        return ChannelSchema.findByIdAndUpdate(channelId, body, (err, channel) => {
+          if (err) {
+            return res.status(500).json({
+              message: 'Something went wrong'
+            })
+          }
+          user.welcome = true
+          user.save()
+          return res.status(202).json({
+            message: 'Channel successfully updated.'
+          })
+        })
       })
     }
     return ChannelSchema.findByIdAndUpdate(channelId, body, (err, channel) => {
