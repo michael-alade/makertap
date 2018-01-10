@@ -126,10 +126,11 @@ app.get('*', (req, res) => {
             <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
             <link rel="stylesheet" href="/static/css/uikit.min.css" />
             <link rel="stylesheet" href="/static/css/custom-style.css" />
+            
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplebar/2.5.1/simplebar.css" />
             <script src="https://cdnjs.cloudflare.com/ajax/libs/simplebar/2.5.1/simplebar.js"></script>
-            <script src="/static/js/uikit.min.js"></script>
-            <script src="/static/js/uikit-icons.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.31/js/uikit.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.31/js/uikit-icons.min.js"></script>
             <script src="https://www.google.com/recaptcha/api.js?onload=vueRecaptchaApiLoaded&render=explicit" async defer>
             </script>
           </head>

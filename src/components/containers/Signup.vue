@@ -99,7 +99,7 @@ export default {
       }
       return this.$store.dispatch('signup', this.form).then((res) => {
         if (res.data.token) {
-          window.location.href = '/'
+          window.location.href = `/user/${res.data.username}`
         }
       }).catch((err) => {
         self.error = {

@@ -81,63 +81,62 @@ function stopLive (req, res) {
   })
 }
 
-/**
- * search
- * @param {*} req
- * @param {*} res
- */
-function search (req, res) {
-  const keyword = req.query.query
-  const categories = req.query.categories && req.query.categories.length
-    ? req.query.categories.split(',') : null
-  const limit = req.query.limit
-  const status = req.query.status
-  let query = {}
-  if (keyword) {
-    query = {
-      $text: {
-        $search: keyword
-      }
-    }
-  }
-  if (categories) {
-    Object.assign(query, {
-      tags: {
-        $in: categories
-      }
-    })
-  }
-  // if (limit) {
-  //   query.$limit = Number(limit)
-  // }
-  if (status) {
-    query.status = status
-  }
-  return VideoSchema
-    .find(query)
-    .sort({
-      createdDate: -1
-    })
-    .limit(limit)
-    .exec((err, videos) => {
-      if (err) {
-        return res.status(500).json({
-          status: 500,
-          error: err,
-          message: 'An error occurred.'
-        })
-      }
-      if (videos) {
-        return res.status(200).json({
-          data: videos,
-          limit: limit || null
-        })
-      }
-    })
-}
+// /**
+//  * search
+//  * @param {*} req
+//  * @param {*} res
+//  */
+// function search (req, res) {
+//   const keyword = req.query.query
+//   const categories = req.query.categories && req.query.categories.length
+//     ? req.query.categories.split(',') : null
+//   const limit = req.query.limit
+//   const status = req.query.status
+//   let query = {}
+//   if (keyword) {
+//     query = {
+//       $text: {
+//         $search: keyword
+//       }
+//     }
+//   }
+//   if (categories) {
+//     Object.assign(query, {
+//       tags: {
+//         $in: categories
+//       }
+//     })
+//   }
+//   // if (limit) {
+//   //   query.$limit = Number(limit)
+//   // }
+//   if (status) {
+//     query.status = status
+//   }
+//   return VideoSchema
+//     .find(query)
+//     .sort({
+//       createdDate: -1
+//     })
+//     .limit(limit)
+//     .exec((err, videos) => {
+//       if (err) {
+//         return res.status(500).json({
+//           status: 500,
+//           error: err,
+//           message: 'An error occurred.'
+//         })
+//       }
+//       if (videos) {
+//         return res.status(200).json({
+//           data: videos,
+//           limit: limit || null
+//         })
+//       }
+//     })
+// }
 
 module.exports = {
   goLive,
-  stopLive,
-  search
+  stopLive
 }

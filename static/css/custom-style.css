@@ -803,11 +803,12 @@ input:focus {
     
 } */
 
-.featured .featured-details .action button {
+.featured .featured-details .action .view {
     width: 100%;
     background: #a2a2a2;
     border: none;
     color: #fff;
+    text-decoration: none;
     cursor: pointer;
     margin-bottom: 10px;
     padding: 7px;
@@ -816,7 +817,7 @@ input:focus {
     /* border: 1px solid #eee; */
 }
 
-.featured .featured-details .action button:focus {
+.featured .featured-details .action .view:focus {
     outline: none;
 }
 

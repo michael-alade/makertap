@@ -1,4 +1,5 @@
 const live = require('../actions/live.action')
+const search = require('../actions/search.action')
 const auth = require('../middlewares/auth.middleware')
 
 module.exports = (router) => {
@@ -12,5 +13,5 @@ module.exports = (router) => {
 
   router
     .route('/live/search')
-    .get(live.search)
+    .get(search.search)
 }

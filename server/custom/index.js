@@ -1,4 +1,6 @@
 var cloudinary = require('cloudinary')
+var algoliasearch = require('algoliasearch')
+var algolia = algoliasearch('ENDTXRMXJ8', 'c9e07f4492ce146a0e9d16a45c24f54f')
 
 cloudinary.config({
   cloud_name: 'makertap',
@@ -11,5 +13,6 @@ function uploadFile (file, options, cb) {
 }
 
 module.exports = {
-  uploadFile
+  uploadFile,
+  algolia
 }

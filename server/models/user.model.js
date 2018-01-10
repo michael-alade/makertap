@@ -27,4 +27,6 @@ var user = new Schema({
   }
 })
 
+user.index({ fullName: 'text', username: 'text' })
+
 module.exports = mongoose.model('User', user)

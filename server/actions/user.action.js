@@ -3,7 +3,9 @@ var crypto = require('crypto-js')
 var UserSchema = require('../models/user.model')
 var ChannelSchema = require('../models/channel.model')
 var custom = require('../custom')
-var VideoSchema = require('../models/video.model')
+// var VideoSchema = require('../models/video.model')
+
+var channelIndex = custom.algolia.initIndex('channel_index')
 
 function verifyPassword (hashedPassword) {
   return crypto.AES.decrypt(hashedPassword, process.env.SECRET).toString(crypto.enc.Utf8)
@@ -28,7 +30,6 @@ function signup (req, res) {
             .then((user) => {
               const token = jwt.sign({
                 username: body.username,
-                email: body.email,
                 _id: user._id
               },
               process.env.SECRET)
@@ -36,7 +37,8 @@ function signup (req, res) {
               return res.status(201).json({
                 status: 201,
                 message: 'Successfully registered',
-                token
+                token,
+                username: user.username
               })
             })
       } else {
@@ -76,13 +78,13 @@ function login (req, res) {
           }
           const token = jwt.sign({
             username: user.username,
-            email: user.email,
             _id: user._id
           }, process.env.SECRET)
           return res.status(200).json({
             status: 200,
             message: 'Successfully logged In',
             userId: user._id,
+            username: user.username,
             token
           })
         }
@@ -181,6 +183,8 @@ function createChannel (req, res) {
         channel: user.channel
       }
       return ChannelSchema.create(body, (err, channel) => {
+        console.log('channel', channel)
+
         if (err) {
           return res.status(500).json({
             message: 'Something went wrong'
@@ -191,10 +195,16 @@ function createChannel (req, res) {
             message: 'Something went wrong'
           })
         }
-        user.channel = channel
-        user.save()
-        return res.status(200).json({
-          message: 'Channel created successfully'
+        channel.objectID = channel._id
+        channelIndex.addObject(channel, (err, content) => {
+          if (err) {
+            console.log('Error: New channel not indexed -- ' + channel._id)
+          }
+          user.channel = channel
+          user.save()
+          return res.status(200).json({
+            message: 'Channel created successfully'
+          })
         })
       })
     })
@@ -227,10 +237,16 @@ function updateChannel (req, res) {
               message: 'Something went wrong'
             })
           }
-          user.welcome = true
-          user.save()
-          return res.status(202).json({
-            message: 'Channel successfully updated.'
+          body.objectID = channelId
+          channelIndex.partialUpdateObject(body, (err, content) => {
+            if (err) {
+              console.log('Error: Channel not updated on algolia -- ' + channelId)
+            }
+            user.welcome = true
+            user.save()
+            return res.status(202).json({
+              message: 'Channel successfully updated.'
+            })
           })
         })
       })
@@ -241,10 +257,16 @@ function updateChannel (req, res) {
           message: 'Something went wrong'
         })
       }
-      user.welcome = true
-      user.save()
-      return res.status(202).json({
-        message: 'Channel successfully updated.'
+      body.objectID = channelId
+      channelIndex.partialUpdateObject(body, (err, content) => {
+        if (err) {
+          console.log('Error: Channel not updated on algolia -- ' + channelId)
+        }
+        user.welcome = true
+        user.save()
+        return res.status(202).json({
+          message: 'Channel successfully updated.'
+        })
       })
     })
   })

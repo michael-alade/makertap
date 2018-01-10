@@ -12,11 +12,17 @@ export default new Vuex.Store({
     mine: null,
     pageProfile: null,
     videos: null,
+    searchQuery: null,
     hideNavbar: false,
     videoSearchLoading: false
   },
   actions,
-  mutations,
+  mutations: {
+    searchQuery (state, query) {
+      state.searchQuery = query
+    },
+    ...mutations
+  },
   getters: {
     getCurrentUser (state) { return state.currentUser },
     videoSearchLoading (state) { return state.videoSearchLoading },

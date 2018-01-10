@@ -1,5 +1,6 @@
-<template>
+<template scope="{ result }">
     <section class="filters">
+        {{ result }}
                 <div class="uk-container">
                     <div class="uk-flex-row uk-grid-small uk-child-width-expand@s" uk-grid>
                         <div class="uk-width-1-1@m">
@@ -94,7 +95,7 @@ export default {
       handler () {
         console.log('watching')
         this.$store.commit('searchLoading', true)
-        this.runSearch()
+        this.$store.commit('searchQuery', this.search)
       },
       deep: true
     }

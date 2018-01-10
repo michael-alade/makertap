@@ -3,7 +3,9 @@ import { app, store } from './app.js'
 // import mobileDetect from './customPlugin/mobileDetect.js'
 
 // get the initialstate from server-rendering.
-store.replaceState(window.__INITIAL_STATE__)
+if (window.window.__INITIAL_STATE__ !== 'init_state') {
+  store.replaceState(window.__INITIAL_STATE__)
+}
 
 // Vue.use(mobileDetect)
 window.__INITIAL_STATE__ = {}
