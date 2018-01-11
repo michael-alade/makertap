@@ -16,7 +16,7 @@
           </div>
           <div class="action">
               <!-- <button class="">Subscribe</button> -->
-              <button class="view">View</button>
+              <button class="view" @click.prevent="goTo(result, 'channel')">View</button>
           </div>
       </div>
   </div>
@@ -24,7 +24,16 @@
 
 <script>
 export default {
-  props: ['result']
+  props: ['result'],
+  methods: {
+    goTo (result, type) {
+      if (result && result.user.username) {
+        if (type === 'channel') {
+          window.location.href = `/user/${result.user.username}`
+        }
+      }
+    }
+  }
 }
 </script>
 

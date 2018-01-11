@@ -10,6 +10,7 @@ export default new Vuex.Store({
     isAuthenticated: false,
     currentUser: null,
     mine: null,
+    searchStore: null,
     pageProfile: null,
     videos: null,
     searchQuery: null,

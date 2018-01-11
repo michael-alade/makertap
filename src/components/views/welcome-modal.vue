@@ -37,8 +37,8 @@
                     <select required v-model="form.specialty" class="uk-select" type="text" placeholder="Input">
                         <option value="internet-software">Internet software</option>
                         <option value="programming">Programming</option>
+                        <option value="artificial-intelligence">Artificial Intelligence</option>
                         <option value="ecommerce">Ecommerce</option>
-                        <option value="cryptocurrency">Cryptocurrency</option>
                         <option value="fintech">Fintech</option>
                         <option value="blockchain">Blockchain</option>
                         <option value="craftmanship">Craftmanship</option>
@@ -82,7 +82,7 @@ export default {
       if (this.form.platform === 'youtube') {
         this.form.embed = {
           platform: this.form.platform,
-          liveUrl: `https://www.youtube.com/embed/live_stream?channel=${this.form.youtubeChannelId}`
+          liveUrl: `https://www.youtube.com/embed/live_stream?channel=${this.form.youtubeChannelId}&autoplay=1`
         }
       } else if (this.form.platform === 'twitch') {
         this.form.embed = {

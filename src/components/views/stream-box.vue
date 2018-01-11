@@ -1,8 +1,7 @@
 <template>
     <div>
         <div v-if="mobileDetect && !mobileDetect.mobile()" class="live-stream-box uk-visible@m">
-            <div id="live-video">
-            </div>
+            <iframe v-if="pageProfile && pageProfile.channel.status === 'live'" id="live-video" :src="pageProfile ? pageProfile.channel.embed.liveUrl : null"></iframe>
             <div class="uk-overlay uk-position-top">
                 <div v-if="pageProfile && pageProfile.channel.status === 'live'" class="live-now">
                     <span class="fa fa-circle"></span> Live
@@ -13,8 +12,7 @@
             </div>
         </div>
         <div v-if="mobileDetect && mobileDetect.mobile()" class="live-stream-box-small uk-hidden@m">
-            <div id="live-video">
-            </div>
+            <div id="live-video"></div>
             <div class="uk-overlay uk-position-top">
                 <div v-if="pageProfile && pageProfile.channel.status === 'live'" class="live-now">
                     <span class="fa fa-circle"></span> Live
@@ -29,7 +27,11 @@
 
 <script>
 import MobileDetect from 'mobile-detect'
+// import VueTwitchPlayer from 'vue-twitch-player'
 export default {
+  components: {
+    // VueTwitchPlayer
+  },
   data () {
     return {
       mobileDetect: null

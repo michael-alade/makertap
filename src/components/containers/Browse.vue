@@ -2,11 +2,10 @@
     <div class="">
         <filters />
         <ais-index
-          index-name="channel_index"
-          app-id="ENDTXRMXJ8"
+          :searchStore="searchStore"
           :query="searchQuery.input"
+          :query-parameters="{ facetFilters: [searchQuery.facetFilters], facets: ['specialty'] }"
           :auto-search="true"
-          api-key="87fcdcb7db64f38e74409da5239fb067"
         >
   <!-- Add your InstantSearch components here. -->
           <section class="live-streams">
@@ -19,6 +18,16 @@
                               </div>
                           </template>
                         </ais-results>
+                        <ais-no-results>
+                            <template>
+                                <div class="no-results">
+                                    <div class="no-results-center">
+                                        <span class="fa fa-2x fa-frown-o"></span><br/>
+                                        No result found
+                                    </div>
+                                </div>
+                            </template>
+                        </ais-no-results>
                     <div v-if="loading" class="uk-overlay-default uk-position-cover">
                         <div class="uk-position-top" style="display: flex; padding-top: 120px; justify-content: center">
                             <div class="sk-folding-cube">
@@ -27,38 +36,50 @@
                                 <div class="sk-cube4 sk-cube"></div>
                                 <div class="sk-cube3 sk-cube"></div>
                             </div>
-                                <!-- <span class="fa-3x fa fa-spin fa-spinner"></span> -->
                         </div>
                     </div>
                 </div>
-                <!-- <div class="view-more">
-                    <a href="#" style="margin-top: 30px" class="uk-button theme-btn uk-button-round">View more</a>
-                </div> -->
             </section>
         </ais-index>
         <!-- <filters /> -->
         <!-- <no-result v-if="!videos.length" /> -->
         <!-- <filter-result v-if="videos.length" /> -->
-        <footer-view />
     </div>
 </template>
 
 <script>
 import Filters from '../views/filters'
 import ChannelThumb from '../views/channel-thumb'
+import MobileDetect from 'mobile-detect'
 import FilterResult from '../views/filter-result'
 import FooterView from '../views/footer'
 import NoResult from '../views/no-result'
+import {
+  createFromAlgoliaCredentials,
+  createFromSerialized
+} from 'vue-instantsearch'
+
+let algoliaSearchStore
 
 export default {
   data () {
     return {
-      query: ''
+      mobileDetect: null,
+      loading: false
     }
   },
   preFetch ({ store }) {
-    // console.log('got here')
-    // return store.dispatch('search')
+    algoliaSearchStore = createFromAlgoliaCredentials(
+      'ENDTXRMXJ8',
+      '87fcdcb7db64f38e74409da5239fb067'
+    )
+    algoliaSearchStore.indexName = 'channel_index'
+    algoliaSearchStore.query = ''
+    algoliaSearchStore.start()
+    algoliaSearchStore.refresh()
+    return algoliaSearchStore.waitUntilInSync().then(() => {
+      store.state.searchStore = algoliaSearchStore.serialize()
+    })
   },
   metaInfo: {
     title: 'Find Insipiration and motivation video from startup founders and makers',
@@ -80,7 +101,16 @@ export default {
     FooterView,
     FilterResult
   },
+  mounted () {
+    this.mobileDetect = new MobileDetect(window.navigator.userAgent)
+  },
   computed: {
+    searchStore () {
+      if (this.$store.state.searchStore) {
+        return createFromSerialized(this.$store.state.searchStore)
+      }
+      return null
+    },
     videos () {
       if (this.$store.state.videos && this.$store.state.videos.data) {
         return this.$store.state.videos.data
@@ -92,7 +122,8 @@ export default {
         return this.$store.state.searchQuery
       }
       return {
-        input: ''
+        input: '',
+        facetFilters: []
       }
     }
   }

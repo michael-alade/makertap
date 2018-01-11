@@ -1,53 +1,25 @@
-<template scope="{ result }">
+<template>
     <section class="filters">
-        {{ result }}
                 <div class="uk-container">
                     <div class="uk-flex-row uk-grid-small uk-child-width-expand@s" uk-grid>
+                        <div class="uk-width-1-1@m">
+                            <powered-by-algolia v-if="mobileDetect && !mobileDetect.mobile()" />
+                        </div>
                         <div class="uk-width-1-1@m">
                             <div class="uk-inline input-container">
                                 <span class="uk-form-icon" uk-icon="icon: search"></span>
                                 <input type="text" v-model="search.input" class="uk-input filter search" placeholder="Find inspiring product live streams" />
                             </div>
                         </div>
-                        <div class="uk-width-1-1@m" :class="{ 'uk-grid-margin': mobileDetect && mobileDetect.mobile() ? true : false }" v-if="showFilter">
+                        <div class="uk-width-1-1@m uk-grid-margin" :class="{ 'uk-grid-margin': mobileDetect && mobileDetect.mobile() ? true : false }" v-if="showFilter">
                             <div class="filter-group">
                                 <span class="filter-label">
                                     Interests
                                 </span>
                                 <div class="uk-flex-row uk-grid-small uk-child-width-expand@s" uk-grid>
-                                    <div class="uk-width-1-5@m uk-width-1-2@s">
-                                        <div class="category" :class="{ 'active': search.interests.includes('Data Science') }" @click="toggleInterest('Data Science')">
-                                            Data Science
-                                        </div>
-                                    </div>
-                                    <div class="uk-width-1-5@m uk-width-1-2@s" :class="{ 'uk-grid-margin': mobileDetect && mobileDetect.mobile() ? true : false }">
-                                        <div class="category" :class="{ 'active': search.interests.includes('Fintech') }" @click="toggleInterest('Fintech')">
-                                            Fintech
-                                        </div>
-                                    </div>
-                                    <div class="uk-width-1-5@m uk-width-1-2@s" :class="{ 'uk-grid-margin': mobileDetect && mobileDetect.mobile() ? true : false }">
-                                        <div class="category" :class="{ 'active': search.interests.includes('Artificial intelligence') }" @click="toggleInterest('Artificial intelligence')">
-                                            Artificial intelligence
-                                        </div>
-                                    </div>
-                                    <div class="uk-width-1-5@m uk-width-1-2@s" :class="{ 'uk-grid-margin': mobileDetect && mobileDetect.mobile() ? true : false }">
-                                        <div class="category" :class="{ 'active': search.interests.includes('Ecommerce') }" @click="toggleInterest('Ecommerce')">
-                                            Ecommerce
-                                        </div>
-                                    </div>
-                                    <div class="uk-width-1-5@m uk-width-1-2@s" :class="{ 'uk-grid-margin': mobileDetect && mobileDetect.mobile() ? true : false }">
-                                        <div class="category" :class="{ 'active': search.interests.includes('Fashion') }" @click="toggleInterest('Fashion')">
-                                            Fashion
-                                        </div>
-                                    </div>
-                                    <div class="uk-width-1-5@m uk-width-1-2@s" :class="{ 'uk-grid-margin': mobileDetect && mobileDetect.mobile() ? true : false }">
-                                        <div class="category" :class="{ 'active': search.interests.includes('Hardware') }" @click="toggleInterest('Hardware')">
-                                            Hardware
-                                        </div>
-                                    </div>
-                                    <div class="uk-width-1-5@m uk-width-1-2@s" :class="{ 'uk-grid-margin': mobileDetect && mobileDetect.mobile() ? true : false }">
-                                        <div class="category" :class="{ 'active': search.interests.includes('Software') }" @click="toggleInterest('Software')">
-                                            Software
+                                    <div v-for="filter in filters" :key="filter.value" class="uk-width-1-5@m uk-width-1-2@s">
+                                        <div class="category" :class="{ 'active': search.interests.includes(filter.value) }" @click="toggleInterest(filter.value)">
+                                            {{ filter.name }}
                                         </div>
                                     </div>
                                 </div>
@@ -60,31 +32,46 @@
                                         {{ interest }}
                                         <span class="fa fa-close" @click="toggleInterest(interest)"></span>
                                     </div>
-                                    <div v-if="!showFilter && mobileDetect && mobileDetect.mobile()" class="filter-reset" @click="toggleFilter">
+                                    <div v-if="!showFilter" class="filter-reset" @click="toggleFilter">
                                         Filters
                                     </div>
-                                    <div v-if="showFilter && mobileDetect && mobileDetect.mobile()" class="filter-reset" @click="toggleFilter">
-                                        <span class="fa fa-close"></span> Hide filters
+                                    <div v-if="showFilter" style="width: 90px;" class="filter-reset hi" @click="toggleFilter">
+                                        Hide filters
                                     </div>
                                     <div class="filter-reset" @click="resetFilters">
                                         Reset
                                     </div>
-                            </div>
+                                    <powered-by-algolia style="right: 14px; position: absolute;" v-if="mobileDetect && mobileDetect.mobile()" />
                         </div>
                     </div>
-            </section>
+                </div>
+        </section>
 </template>
 
 <script>
 import MobileDetect from 'mobile-detect'
+import PoweredByAlgolia from './powered-by-algolia'
 export default {
+  components: {
+    PoweredByAlgolia
+  },
   data () {
     return {
       selectedInterests: [],
       keyword: '',
-      showFilter: false,
+      showFilter: true,
       mobileDetect: null,
+      filters: [
+        { name: 'Internet Software', value: 'internet-software' },
+        { name: 'Programming', value: 'programming' },
+        { name: 'Fintech', value: 'fintech' },
+        { name: 'Artificial Intelligence', value: 'artificial-intelligence' },
+        { name: 'Ecommerce', value: 'ecommerce' },
+        { name: 'Blockchain', value: 'blockchain' },
+        { name: 'Craftmanship', value: 'craftmanship' }
+      ],
       search: {
+        interestsFilter: [],
         input: '',
         interests: []
       }
@@ -95,16 +82,18 @@ export default {
       handler () {
         console.log('watching')
         this.$store.commit('searchLoading', true)
-        this.$store.commit('searchQuery', this.search)
+        this.$store.commit('searchQuery', Object.assign({}, this.search, {
+          facetFilters: this.search.interestsFilter
+        }))
       },
       deep: true
     }
   },
   mounted () {
     this.mobileDetect = new MobileDetect(window.navigator.userAgent)
-    if (!this.mobileDetect.mobile()) {
-      this.showFilter = true
-    }
+    // if (!this.mobileDetect.mobile()) {
+    //   this.showFilter = true
+    // }
   },
   methods: {
     toggleFilter () {
@@ -117,17 +106,22 @@ export default {
     },
     toggleInterest (interest) {
       if (this.search.interests.includes(interest)) {
+        this.search.interestsFilter = this.search.interestsFilter.filter(filter => {
+          return filter !== `specialty:${interest}`
+        })
         this.search.interests = this.search.interests.filter(int => {
           return int !== interest
         })
         return true
       }
+      this.search.interestsFilter.push(`specialty:${interest}`)
       this.search.interests.push(interest)
     },
     resetFilters () {
       this.search = {
         input: '',
-        interests: []
+        interests: [],
+        interestsFilter: []
       }
     },
     runSearch () {

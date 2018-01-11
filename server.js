@@ -15,6 +15,20 @@ const app = express()
 const router = express.Router()
 const port = process.env.PORT || 3000
 
+const dependencies = `
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/uikit.min.css" />
+<link rel="stylesheet" href="/static/css/custom-style.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplebar/2.5.1/simplebar.css" />
+<script src="https://embed.twitch.tv/embed/v1.js"></script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/simplebar/2.5.1/simplebar.js"></script>
+<script src="/static/js/uikit.min.js"></script>
+<script src="/static/js/uikit-icons.min.js"></script>
+<script src="https://www.google.com/recaptcha/api.js?onload=vueRecaptchaApiLoaded&render=explicit" async defer>
+</script>
+`
+
 dotenv.config()
 
 const getCurrentUser = (cookies) => {
@@ -122,17 +136,7 @@ app.get('*', (req, res) => {
             ${style.text()}
             ${script.text()}
             ${noscript.text()}
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
-            <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-            <link rel="stylesheet" href="/static/css/uikit.min.css" />
-            <link rel="stylesheet" href="/static/css/custom-style.css" />
-            
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplebar/2.5.1/simplebar.css" />
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/simplebar/2.5.1/simplebar.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.31/js/uikit.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.31/js/uikit-icons.min.js"></script>
-            <script src="https://www.google.com/recaptcha/api.js?onload=vueRecaptchaApiLoaded&render=explicit" async defer>
-            </script>
+            ${dependencies}
           </head>
         `)
         html = index.replace('<div id=app></div>', html)

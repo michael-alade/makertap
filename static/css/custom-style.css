@@ -283,6 +283,10 @@
     height: 500px;
     background: #000;
 }
+.live-stream-box #live-video {
+    width: 100%;
+    height: 100%;
+}
 .live-stream iframe {
     width: 100%;
     height: 500px;
@@ -752,7 +756,7 @@ input:focus {
 
 .featured .featured-avatar {
     width: 97px;
-    background: #8e8282;
+    /* background: #8e8282; */
     height: 100%;
     border-radius: 8px 0px 0px 8px;
 }
