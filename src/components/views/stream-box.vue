@@ -3,20 +3,14 @@
         <div v-if="mobileDetect && !mobileDetect.mobile()" class="live-stream-box uk-visible@m">
             <iframe v-if="pageProfile && pageProfile.channel.status === 'live'" id="live-video" :src="pageProfile ? pageProfile.channel.embed.liveUrl : null"></iframe>
             <div class="uk-overlay uk-position-top">
-                <div v-if="pageProfile && pageProfile.channel.status === 'live'" class="live-now">
-                    <span class="fa fa-circle"></span> Live
-                </div>
                 <div v-if="pageProfile && pageProfile.channel.status === 'offline'" class="offline">
                     <span class="fa fa-circle"></span> Offline
                 </div>
             </div>
         </div>
         <div v-if="mobileDetect && mobileDetect.mobile()" class="live-stream-box-small uk-hidden@m">
-            <div id="live-video"></div>
+            <iframe v-if="pageProfile && pageProfile.channel.status === 'live'" id="live-video" :src="pageProfile ? pageProfile.channel.embed.liveUrl : null"></iframe>
             <div class="uk-overlay uk-position-top">
-                <div v-if="pageProfile && pageProfile.channel.status === 'live'" class="live-now">
-                    <span class="fa fa-circle"></span> Live
-                </div>
                 <div v-if="pageProfile && pageProfile.channel.status === 'offline'" class="offline">
                     <span class="fa fa-circle"></span> Offline
                 </div>

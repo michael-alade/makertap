@@ -31,7 +31,6 @@ export default {
     ]
   },
   mounted () {
-    console.log(window.navigator.userAgent, 'user Agent')
   },
   computed: {
     username () {

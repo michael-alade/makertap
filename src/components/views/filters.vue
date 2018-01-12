@@ -80,7 +80,6 @@ export default {
   watch: {
     search: {
       handler () {
-        console.log('watching')
         this.$store.commit('searchLoading', true)
         this.$store.commit('searchQuery', Object.assign({}, this.search, {
           facetFilters: this.search.interestsFilter

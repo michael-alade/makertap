@@ -1,6 +1,7 @@
 const express = require('express')
 const fs = require('fs')
 const bodyParser = require('body-parser')
+const requestIp = require('request-ip')
 const cookieParser = require('cookie-parser')
 const path = require('path')
 const UserModel = require('./server/models/user.model')
@@ -68,6 +69,7 @@ const getCurrentUser = (cookies) => {
   })
 }
 
+app.use(requestIp.mw())
 app.use(cookieParser())
 app.use(cors())
 app.use(bodyParser.json())

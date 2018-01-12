@@ -1,5 +1,9 @@
 var UserSchema = require('../models/user.model')
 var VideoSchema = require('../models/video.model')
+var ChannelSchema = require('../models/channel.model')
+var custom = require('../custom')
+
+var channelIndex = custom.algolia.initIndex('channel_index')
 
 /**
  * goLive
@@ -7,48 +11,26 @@ var VideoSchema = require('../models/video.model')
  * @param {*} res
  */
 function goLive (req, res) {
-  let body = req.body
-  const userId = req.decoded._id
-  UserSchema
-    .findById(userId)
-    .then(user => {
-      if (user) {
-        body.creator = {
-          _id: user._id,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          username: user.username
-        }
-        body.status = 'live'
-        VideoSchema.create(body, (err, result) => {
-          if (err) {
-            return res.status(500).json({
-              status: 500,
-              err: err,
-              message: 'Something went wrong.'
-            })
-          }
-          UserSchema.findByIdAndUpdate(userId, { live: result }, (err, result) => {
-            if (err) {
-              return res.status(500).json({
-                status: 500,
-                message: 'Something went wrong.'
-              })
-            }
-            return res.status(201).json({
-              status: 201,
-              message: 'Video created.'
-            })
-          })
-        })
-      }
-    }).catch(err => {
+  const channelId = req.params.channelId
+  return ChannelSchema.findByIdAndUpdate(channelId, { status: 'live' }, (err, channel) => {
+    if (err) {
       return res.status(500).json({
-        status: 500,
-        err: err,
-        message: 'Something went wrong.'
+        message: 'Server error: could not go live.'
+      })
+    }
+    const update = {
+      status: 'live',
+      objectID: channelId
+    }
+    return channelIndex.partialUpdateObject(update, (err, content) => {
+      if (err) {
+        console.log('Error: Channel not go live on algolia -- ' + channelId)
+      }
+      return res.status(200).json({
+        message: 'Channel is live'
       })
     })
+  })
 }
 
 /**
@@ -57,25 +39,23 @@ function goLive (req, res) {
  * @param {*} res
  */
 function stopLive (req, res) {
-  const body = req.body
-  const userId = req.decoded._id
-  VideoSchema.findByIdAndUpdate(body._id, { status: 'offline' }, (err, result) => {
+  const channelId = req.params.channelId
+  return ChannelSchema.findByIdAndUpdate(channelId, { status: 'offline' }, (err, channel) => {
     if (err) {
-      return res.status(404).json({
-        status: 404,
-        message: 'Video was not found'
+      return res.status(500).json({
+        message: 'Server error: could not stop live.'
       })
     }
-    UserSchema.findByIdAndUpdate(userId, { 'live.status': 'offline' }, (err, result) => {
+    const update = {
+      status: 'offline',
+      objectID: channelId
+    }
+    return channelIndex.partialUpdateObject(update, (err, content) => {
       if (err) {
-        return res.status(500).json({
-          status: 500,
-          message: 'Something went wrong.'
-        })
+        console.log('Error: Channel could not stop live on algolia -- ' + channelId)
       }
       return res.status(200).json({
-        status: 200,
-        message: 'Live stream successfully stopped'
+        message: 'Channel is offline'
       })
     })
   })

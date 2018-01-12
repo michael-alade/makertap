@@ -16,7 +16,6 @@ export default (context) => {
       // call `asyncData()` on all matched route components
       Promise.all(matchedComponents.map(Component => {
         if (Component.preFetch) {
-          // console.log(Component, 'component')
           return Component.preFetch({
             store,
             route: router.currentRoute

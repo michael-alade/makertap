@@ -18,14 +18,4 @@ videos.search = ({ commit }, payload) => {
   })
 }
 
-videos.goLive = ({ commit }, payload) => {
-  return axios.post('/api/live', payload, {
-    headers: {
-      Authorization: 'Bearer 178290'
-    }
-  }).then(res => {
-    console.log(res, 'res')
-  })
-}
-
 export default videos

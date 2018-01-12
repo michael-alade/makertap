@@ -54,6 +54,7 @@
 
 <script>
 export default {
+  props: ['pageProfile'],
   data () {
     return {
       show: false,

@@ -4,11 +4,11 @@ const auth = require('../middlewares/auth.middleware')
 
 module.exports = (router) => {
   router
-    .route('/live')
+    .route('/live/:channelId')
     .post(auth, live.goLive)
 
   router
-    .route('/live/stop')
+    .route('/live/stop/:channelId')
     .post(auth, live.stopLive)
 
   router

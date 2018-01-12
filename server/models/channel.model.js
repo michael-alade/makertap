@@ -11,6 +11,17 @@ var embed = new Schema({
   }
 })
 
+var analytics = new Schema({
+  subscribers: {
+    type: Array,
+    default: []
+  },
+  totalViews: {
+    type: Array,
+    default: []
+  }
+})
+
 var user = new Schema({
   fullName: {
     type: String,
@@ -49,6 +60,13 @@ var channel = new Schema({
   status: {
     type: String,
     default: 'offline'
+  },
+  analytics: {
+    type: analytics,
+    default: {
+      subscribers: [],
+      totalViews: []
+    }
   },
   objectID: {
     type: String,

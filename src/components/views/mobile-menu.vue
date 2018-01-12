@@ -3,11 +3,11 @@
         <div class="uk-offcanvas-bar">
             <button class="uk-offcanvas-close" type="button" uk-close></button>
             <ul class="uk-nav uk-nav-default">
-                <li class="uk-active">
+                <li :class="{ 'uk-active': route.path === '/' }">
                     <a href="/">HOME</a>
                 </li>
-                <li>
-                    <a href="/browse">BROWSE VIDEOS</a>
+                <li :class="{ 'uk-active': route.path === '/explore' }">
+                    <a href="/explore">EXPLORE</a>
                 </li>
                 <li class="">
                     <a href="/login">LOGIN</a>
@@ -22,7 +22,14 @@
 
 <script>
 export default {
-
+  mounted () {
+    console.log(this.route, 'router')
+  },
+  computed: {
+    route () {
+      return this.$route
+    }
+  }
 }
 </script>
 

@@ -14,11 +14,11 @@
                 </div>
                 <div class="uk-navbar-right uk-visible@m">
                     <ul class="uk-navbar-nav">
-                        <li class="uk-active">
+                        <li :class="{ 'uk-active': route.path === '/' }">
                             <a href="/">HOME</a>
                         </li>
-                        <li>
-                            <a href="/browse">BROWSE VIDEOS</a>
+                        <li :class="{ 'uk-active': route.path === '/explore' }">
+                            <a href="/explore">EXPLORE</a>
                         </li>
                         <li v-if="!isAuthenticated">
                             <a href="/login">LOGIN</a>
@@ -69,6 +69,9 @@
 <script>
 export default {
   computed: {
+    route () {
+      return this.$route
+    },
     currentUser () {
       return this.$store.state.currentUser
     },

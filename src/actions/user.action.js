@@ -10,6 +10,24 @@ user.getCurrentUser = ({ commit }) => {
     })
 }
 
+user.goLive = ({ commit }, channelId) => {
+  const token = getCookie('mktoken')
+  return axios.post(`/api/live/${channelId}`, {}, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+}
+
+user.stopLive = ({ commit }, channelId) => {
+  const token = getCookie('mktoken')
+  return axios.post(`/api/live/stop/${channelId}`, {}, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+}
+
 user.signup = ({ commit }, payload) => {
   return axios.post('/api/user/signup', payload).then((res) => {
     axios.post('/api/user/channel', {}, {
@@ -39,6 +57,39 @@ user.getUser = ({ commit }, username) => {
 user.updateChannel = ({ commit }, payload) => {
   const token = getCookie('mktoken')
   return axios.put(`/api/user/channel/${payload.channelId}`, payload, {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  })
+}
+
+user.subscribe = ({ commit }, payload) => {
+  const token = getCookie('mktoken')
+  const body = {
+    userId: payload.userId
+  }
+  return axios.put(`/api/user/channel/${payload.channelId}/subscribe`, body, {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  })
+}
+
+user.unsubscribe = ({ commit }, payload) => {
+  const token = getCookie('mktoken')
+  const body = {
+    userId: payload.userId
+  }
+  return axios.put(`/api/user/channel/${payload.channelId}/unsubscribe`, body, {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  })
+}
+
+user.channelView = (store, channelId) => {
+  const token = getCookie('mktoken')
+  return axios.put(`/api/user/channel/${channelId}/view`, {}, {
     headers: {
       'Authorization': `Bearer ${token}`
     }

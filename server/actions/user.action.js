@@ -196,7 +196,7 @@ function createChannel (req, res) {
           })
         }
         channel.objectID = channel._id
-        channelIndex.addObject(channel, (err, content) => {
+        return channelIndex.addObject(channel, (err, content) => {
           if (err) {
             console.log('Error: New channel not indexed -- ' + channel._id)
           }
@@ -238,7 +238,7 @@ function updateChannel (req, res) {
             })
           }
           body.objectID = channelId
-          channelIndex.partialUpdateObject(body, (err, content) => {
+          return channelIndex.partialUpdateObject(body, (err, content) => {
             if (err) {
               console.log('Error: Channel not updated on algolia -- ' + channelId)
             }
@@ -272,10 +272,163 @@ function updateChannel (req, res) {
   })
 }
 
+function subscribe (req, res) {
+  const userId = req.body.userId
+  const channelId = req.params.channelId
+  return UserSchema.findById(userId, (err, user) => {
+    if (err) {
+      return res.status(500).json({
+        message: 'This user is not available'
+      })
+    }
+    return ChannelSchema.findById(channelId, (err, channel) => {
+      if (err) {
+        return res.status(500).json({
+          message: 'Channel does not exist'
+        })
+      }
+      let found = channel.analytics
+      if (channel.analytics.subscribers.indexOf(userId) === -1) {
+        console.log('analytics found', found.subscribers)
+        return ChannelSchema.findByIdAndUpdate(channelId, {
+          $push: {
+            'analytics.subscribers': userId
+          }
+        }, (err, channel) => {
+          if (err || channel) {
+            return res.status(500).json({
+              message: 'Channel was not updated'
+            })
+          }
+          channel.objectID = channel._id
+          found.subscribers.push(userId)
+          // found.subscribers = found.subscribers
+          console.log(found.subscribers, 'analytics')
+          return channelIndex.partialUpdateObject({
+            objectID: channelId,
+            analytics: found
+          }, (err, content) => {
+            if (err) {
+              console.log('Error: channel subsribe not updated on algolia')
+            }
+            return res.status(202).json({
+              message: 'User is subscribed'
+            })
+          })
+        })
+      }
+      return res.status(200).json({
+        message: 'User is already subscribed'
+      })
+    })
+  })
+}
+
+function unSubscribe (req, res) {
+  const channelId = req.params.channelId
+  const userId = req.decoded._id
+
+  return UserSchema.findById(userId, (err, user) => {
+    if (err || !user) {
+      return res.status(500).json({
+        message: 'User not found'
+      })
+    }
+    return ChannelSchema.findById(channelId, (err, channel) => {
+      if (err || !channel) {
+        return res.status(500).json({
+          message: 'Channel not found'
+        })
+      }
+      channel.analytics.subscribers = channel.analytics.subscribers.filter(sub => {
+        return sub !== userId
+      })
+      const updated = channel.analytics
+      return ChannelSchema.findByIdAndUpdate(channelId, {
+        'analytics.subscribers': channel.analytics.subscribers
+      }, (err, result) => {
+        if (err || !result) {
+          return res.status(500).json({
+            message: 'Channel not found'
+          })
+        }
+        return channelIndex.partialUpdateObject({
+          objectID: channelId,
+          analytics: updated
+        }, (err, content) => {
+          if (err) {
+            console.log('Not update on algolia -- ' + channelId)
+          }
+          return res.status(200).json({
+            message: 'Unsubscribed'
+          })
+        })
+      })
+    })
+  })
+}
+
+function updateChannelViews (req, res) {
+  const channelId = req.params.channelId
+  const userId = req.decoded._id
+  // let lastSession
+  // let diff
+  return UserSchema.findById(userId, (err, user) => {
+    if (err || !user) {
+      return res.status('User not found')
+    }
+    return ChannelSchema.findByIdAndUpdate(channelId, {
+      $push: {
+        'analytics.totalViews': userId
+      }
+    }, (err, channel) => {
+      if (err && !channel) {
+        return res.status(500).json({
+          message: 'Channel not found'
+        })
+      }
+      channel.objectID = channelId
+      console.log(channel.analytics.totalViews.length, 'channel analytics')
+      return channelIndex.partialUpdateObject({
+        objectID: channelId,
+        analytics: channel.analytics
+      }, (err, content) => {
+        if (err) {
+          console.log(`${err} Error: channel views not updated`)
+        }
+        return res.status(200).json({
+          message: 'Views updated'
+        })
+      })
+      // check if user has viewed recently - less then 30 mins
+      // const view = channel.analytics.totalViews.filter(client => {
+      //   return client.ip === clientIp
+      // })
+      // if (view.length) {
+      //   lastSession = view[view.length - 1]
+      //   diff = custom.timeDiff(Date.now(), lastSession.time, 'minutes')
+      //   if (diff && diff >= 30) {
+      //     return Channel.findByIdAndUpdate(channelId, {
+      //       $push: {
+      //         'analytics.totalViews': {
+      //           ip: clientIp,
+      //           time: Date.now()
+      //         }
+      //       }
+      //     })
+      //   }
+      // }
+    })
+  })
+}
+
 module.exports = {
   signup,
   login,
   getUser,
   updateChannel,
-  createChannel
+  createChannel,
+  unSubscribe,
+  updateChannelViews,
+  subscribe
 }

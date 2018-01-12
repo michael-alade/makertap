@@ -69,7 +69,6 @@ export default {
   },
   methods: {
     onVerify (response) {
-      console.log('payload', response)
       if (response) {
         this.form.verified = true
       }

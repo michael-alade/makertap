@@ -10,8 +10,8 @@
               <div class="fullname">{{ result && result.user.fullName ? result.user.fullName : 'Pieter Levels' }}</div>
               <div class="username">@{{ result && result.user.username ? result.user.username : 'levelsio' }}</div>
               <div class="description">
-                  <div><span class="fa fa-eye"></span> 15k</div>
-                  <div><span class="fa fa-users"></span> 15k</div>
+                  <div><span class="fa fa-eye"></span> {{ result ? result.analytics.totalViews.length : null }}</div>
+                  <div><span class="fa fa-users"></span> {{ result ? result.analytics.subscribers.length: null }}</div>
               </div>
           </div>
           <div class="action">

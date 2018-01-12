@@ -15,6 +15,18 @@ module.exports = (router) => {
     .post(auth, user.createChannel)
 
   router
+    .route('/user/channel/:channelId/subscribe')
+    .put(auth, user.subscribe)
+
+  router
+    .route('/user/channel/:channelId/unsubscribe')
+    .put(auth, user.unSubscribe)
+
+  router
+    .route('/user/channel/:channelId/view')
+    .put(auth, user.updateChannelViews)
+
+  router
     .route('/user/channel/:channelId')
     .put(auth, user.updateChannel)
 

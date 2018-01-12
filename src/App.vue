@@ -17,10 +17,8 @@ export default {
     MobileMenu
   },
   preFetch () {
-    console.log('user is logged in')
   },
   mounted () {
-    console.log(this.$store.state, 'state')
   },
   computed: {
     hideNavbar () {

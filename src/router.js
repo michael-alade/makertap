@@ -35,7 +35,7 @@ const router = new VueRouter({
   mode: 'history',
   routes: [
     { path: '/', component: Home },
-    { path: '/browse', component: Browse },
+    { path: '/explore', component: Browse },
     { path: '/login', component: Login },
     // { path: '/logout', beforeEnter: logout },
     { path: '/signup', component: Signup },

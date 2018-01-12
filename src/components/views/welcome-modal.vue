@@ -102,7 +102,6 @@ export default {
       const self = this
       const reader = new window.FileReader()
       const blob = this.$refs.uploadPicture.files[0]
-      console.log(typeof blob, 'typeof blob')
       this.form.channelPicture = blob
       if (blob) {
         reader.onload = (e) => {

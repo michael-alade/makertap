@@ -30,7 +30,7 @@
 
 /* Buttons */
 .uk-button-round {
-    border-radius: 8px;
+    /* border-radius: 8px; */
 }
 .theme-btn {
     border: none;
@@ -277,6 +277,28 @@
     padding-top: 20px;
     /* margin-bottom: 50px; */
 }
+
+.profile-section .actions {
+    width: 100%;
+}
+
+.profile-section .actions .uk-button {
+    margin-left: 10px;
+}
+
+.channel-analytics {
+    display: flex;
+    height: 100%;
+    font-size: 12px;
+    float: right;
+    justify-content: center;
+    align-items: center;
+}
+
+.channel-analytics div {
+    margin-right: 10px
+}
+
 .live-stream-box {
     width: 100%;
     position: relative;
@@ -328,6 +350,11 @@
     height: 294px;
     background: #000;
 }
+
+.live-stream-box-small #live-video {
+    width: inherit;
+    height: inherit;
+}
 .live-stream-box-small .live-stream iframe {
     width: 100%;
     height: 294px;
@@ -376,11 +403,28 @@
 
 .go-live-btn {
     float: right;
-    background-color: #809ad9;
+    background-color: #8686da;
     color: #fff;
-    font-size: 11px;
-    padding: 0px 24px;
-    border-radius: 9px;
+    font-size: 10px;
+    padding: 0px 23px;
+    border: 1px solid transparent;
+}
+
+.mentorship-btn {
+    border: 1px solid #8686da;
+    background: none;
+    color: #8686da;
+    float: right;
+    font-size: 10px;
+    padding: 0px 23px;
+}
+
+.stop-live-btn {
+    float: right;
+    background-color: #f56b6b;
+    color: #fff;
+    font-size: 10px;
+    padding: 0px 23px;
     border: 1px solid transparent;
 }
 
@@ -827,9 +871,9 @@ input:focus {
 
 .featured .featured-details .action .view {
         /* background: #404040; */
-    color: #809ad9;
+    color: #8686da;
     background: none;
-    border: 1px solid #809ad9;
+    border: 1px solid #8686da;
 }
 
 #welcome-modal .uk-modal-dialog {

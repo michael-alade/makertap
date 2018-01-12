@@ -25,12 +25,49 @@ export const getCookie = (cname) => {
   return ''
 }
 
-export const numberToAbbreviations = (value) => {
-  let suffixes = ['', 'k', 'm', 'b', 't']
-  let suffixNum = Math.floor(('' + value).length / 3)
-  let shortValue = parseFloat((suffixNum !== 0 ? (value / Math.pow(1000, suffixNum)) : value).toPrecision(2))
-  if (shortValue % 1 !== 0) {
-    const shortNum = shortValue.toFixed(1) // eslint-disable-line
+const NumberAbbreviate = () => {
+  var units
+  if (!(this instanceof NumberAbbreviate)) {
+    // function usage: abbrev(n, decPlaces, units)
+    var n = arguments[0]
+    var decPlaces = arguments[1]
+    units = arguments[2]
+    var ab = new NumberAbbreviate(units)
+    return ab.abbreviate(n, decPlaces)
   }
-  return shortValue + suffixes[suffixNum]
+  // class usage: new NumberAbbreviate(units)
+  units = arguments[0]
+  this.units = units == null ? ['k', 'm', 'b', 't'] : units
 }
+
+NumberAbbreviate.prototype._abbreviate = function (number, decPlaces) {
+  decPlaces = Math.pow(10, decPlaces)
+
+  for (var i = this.units.length - 1; i >= 0; i--) {
+    var size = Math.pow(10, (i + 1) * 3)
+
+    if (size <= number) {
+      number = Math.round(number * decPlaces / size) / decPlaces
+
+      if ((number === 1000) && (i < this.units.length - 1)) {
+        number = 1
+        i++
+      }
+
+      number += this.units[i]
+
+      break
+    }
+  }
+
+  return number
+}
+
+NumberAbbreviate.prototype.abbreviate = function (number, decPlaces) {
+  var isNegative = number < 0
+  var abbreviatedNumber = this._abbreviate(Math.abs(number), decPlaces || 0)
+
+  return isNegative ? '-' + abbreviatedNumber : abbreviatedNumber
+}
+
+export const numberAbbreviate = NumberAbbreviate

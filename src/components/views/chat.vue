@@ -39,13 +39,9 @@ export default {
     }
   },
   created () {
-    // console.log()
   },
   mounted () {
     this.simpleBar = new window.SimpleBar(document.getElementById('chats-s'))
-    console.log(this.simpleBar.el.SimpleBar.getScrollElement(), 'simpleBar')
-    // const simplebar = new window.SimpleBar(document.getElementById('chat-scroll'), { autoHide: true })
-    // console.log(simplebar, 'simplebar')
   },
   methods: {
     submit () {
@@ -55,8 +51,6 @@ export default {
       })
       this.keys++
       const chatDiv = document.getElementsByClassName('simplebar-scroll-content')[1]
-      console.log(chatDiv.scrollTop, 'chatDiv.scrollTop')
-      console.log(chatDiv.scrollHeight, 'chatDiv.scrollHeight')
       chatDiv.scrollTop = chatDiv.scrollHeight
     //   this.simpleBar.el.SimpleBar.getScrollElement().scrollIntoView()
     //   this.simpleBar.el.SimpleBar.getScrollElement().scrollTop = 582// this.simpleBar.el.SimpleBar.getScrollElement().scrollHeight
