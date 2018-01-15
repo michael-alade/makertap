@@ -10,6 +10,7 @@ if (window.__INITIAL_STATE__ !== 'init_state') {
 // Vue.use(mobileDetect)
 window.__INITIAL_STATE__ = {}
 var initialState = document.getElementById('state')
+// document.getElementById('mobile-menu').remove()
 initialState.innerHTML = 'empty'
 
 app.$mount('#app')

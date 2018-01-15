@@ -16,8 +16,8 @@
                                 <span class="filter-label">
                                     Interests
                                 </span>
-                                <div class="uk-flex-row uk-grid-small uk-child-width-expand@s" uk-grid>
-                                    <div v-for="filter in filters" :key="filter.value" class="uk-width-1-5@m uk-width-1-2@s">
+                                <div class="uk-flex-row uk-grid-small uk-child-width-expand@s" uk-grid="margin: top-margin">
+                                    <div v-for="filter in filters" :key="filter.value" class="uk-width-1-5@m uk-width-1-2@s uk-width-1-2 top-margin">
                                         <div class="category" :class="{ 'active': search.interests.includes(filter.value) }" @click="toggleInterest(filter.value)">
                                             {{ filter.name }}
                                         </div>

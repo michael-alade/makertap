@@ -1,11 +1,12 @@
 <template>
-    <div uk-sticky class="uk-dark cs-navbar-container">
+    <div uk-sticky class="uk-dark cs-navbar-container" style="position: fixed;top: 0px;width: 669px;">
         <div class="uk-container uk-container-expand">
             <nav uk-navbar class="uk-navbar-container uk-navbar-transparent">
                 <div class="uk-navbar-left">
                     <a class="uk-navbar-item uk-logo" href="/">
-                        <img alt="Makertap Logo" style="width: 35px" src="/static/images/logo-makertap.png"/>
-                        <div style="margin-left: 9px;">Makertap</div>
+                        <!-- <img alt="Makertap Logo" style="width: 35px" src="/static/images/logo-makertap.png"/> -->
+                        <img alt="Makertap Logo" style="width: 141px;" src="/static/images/transparent-makertap-logo-2.png"/>
+                        <!-- <div style="margin-left: 9px;">Makertap</div> -->
                         <!-- <span>Tap</span> -->
                     </a>
                 </div>

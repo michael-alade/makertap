@@ -27,7 +27,7 @@ export default {
       { name: 'keywords', content: 'Makers, creators, motivation, entrepreneurship' }
     ],
     link: [
-      { rel: 'icon', href: '/static/images/favicon.ico?', type: 'image/x-icon' }
+      { rel: 'icon', href: '/static/images/favicon.png?', type: 'image/x-icon' }
     ]
   },
   mounted () {

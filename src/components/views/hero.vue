@@ -7,7 +7,7 @@
                         <h1 :class="{ 'mobile': mobileDetect && mobileDetect.mobile() }">Be Motivated</h1>
                         <p :class="{ 'mobile': mobileDetect && mobileDetect.mobile() }">Watch and learn from live streams of makers and creators building amazing products.</p>
                         <div :class="{ 'mobile': mobileDetect && mobileDetect.mobile() }">
-                            <a href="#" style="margin-top: 20px" class="uk-button theme-btn uk-button-round">How it works</a>
+                            <a href="/explore" style="margin-top: 20px" class="uk-button theme-btn uk-button-round"><span class="fa fa-search fa-shake"></span> Explore</a>
                         </div>
                     </div>
                     <div class="hero-video-box uk-visible@m">

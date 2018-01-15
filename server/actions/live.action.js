@@ -18,6 +18,41 @@ function goLive (req, res) {
         message: 'Server error: could not go live.'
       })
     }
+    if (channel.analytics.subscribers.length) {
+      return UserSchema.find({
+        _id: { $in: channel.analytics.subscribers }
+      }, (err, subscribers) => {
+        if (err || !subscribers) {
+          console.log('could not find subscribers')
+        }
+        if (subscribers) {
+          const emails = subscribers.map(sub => {
+            return sub.email
+          })
+          const msg = {
+            from: 'no-reply@makertap.com',
+            substitutions: {
+              name: `${channel.user.fullName}`,
+              link: `http://localhost:3000/user/${channel.user.username}`
+            },
+            subject: `${channel.user.fullName} just started a livestream - Makertap`
+          }
+          custom.sendMail(emails, msg, 'goLive')
+        }
+        const update = {
+          status: 'live',
+          objectID: channelId
+        }
+        return channelIndex.partialUpdateObject(update, (err, content) => {
+          if (err) {
+            console.log('Error: Channel not go live on algolia -- ' + channelId)
+          }
+          return res.status(200).json({
+            message: 'Channel is live'
+          })
+        })
+      })
+    }
     const update = {
       status: 'live',
       objectID: channelId

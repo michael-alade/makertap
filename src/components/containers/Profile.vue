@@ -34,12 +34,12 @@
                                           <span v-if="streamState === 'loading'" class="fa fa-spin fa-spinner"></span>
                                           STOP LIVE
                                         </button>
-                                        <div class="channel-analytics">
+                                        <div class="channel-analytics" style="cursor: pointer">
                                           <div>
-                                            <span class="fa fa-eye" title="Total views" uk-tooltip="delay: 500"></span> {{ analytics.views }}
+                                            <span class="fa fa-eye" title="Total views" uk-tooltip="delay: 500"></span> {{ analytics ? analytics.views : null }}
                                           </div>
                                           <div>
-                                            <span class="fa fa-users" title="Total subscribers" uk-tooltip="delay: 500"></span> {{ analytics.subscribers }}
+                                            <span class="fa fa-users" title="Total subscribers" uk-tooltip="delay: 500"></span> {{ analytics ? analytics.subscribers : null }}
                                           </div>
                                         </div>
                                     </div>
@@ -73,6 +73,7 @@
                 </div>
         </section>
         <chat />
+        <!-- <welcome-modal /> -->
         <welcome-modal v-if="pageProfile" :pageProfile="pageProfile" />
     </div>
 </template>
@@ -93,19 +94,22 @@ export default {
   },
   metaInfo () {
     const user = this.pageProfile
-    return {
-      title: `${user.fullName}(@${user.username})`,
-      titleTemplate: '%s — MakerTap',
-      meta: [
-        { charset: 'utf-8' },
-        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'description', content: 'Watch amazing live streams of ' + user.fullName + ' turning ideas into business, scaling for large users etc.' },
-        { name: 'keywords', content: 'Makers, creators, ' + user.fullName + ', @' + user.username + ', ' + 'motivation, entrepreneurship' }
-      ],
-      link: [
-        { rel: 'favicon', href: '/static/favicon.ico' }
-      ]
+    if (user) {
+      return {
+        title: `${user.fullName}(@${user.username})`,
+        titleTemplate: '%s — MakerTap',
+        meta: [
+          { charset: 'utf-8' },
+          { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+          { name: 'description', content: 'Watch amazing live streams of ' + user.fullName + ' turning ideas into business, scaling for large users etc.' },
+          { name: 'keywords', content: 'Makers, creators, ' + user.fullName + ', @' + user.username + ', ' + 'motivation, entrepreneurship' }
+        ],
+        link: [
+          { rel: 'favicon', href: '/static/favicon.ico' }
+        ]
+      }
     }
+    return {}
   },
   preFetch ({ store, route }) {
     return store.dispatch('getUser', route.params.username)
@@ -126,6 +130,9 @@ export default {
         'sel-close': ''
       }).show()
     }
+    // window.UIkit.modal('#welcome-modal', {
+    //   'sel-close': ''
+    // }).show()
     if (currentUser && pageProfile.channel.userId !== currentUser._id) {
       this.$store.dispatch('channelView', this.pageProfile.channel._id)
     }
@@ -141,7 +148,6 @@ export default {
           window.onbeforeunload = (e) => {
             return 'Please stop the live video before you close the page.'
           }
-          window
           self.streamState = ''
         })
       })

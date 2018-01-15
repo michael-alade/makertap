@@ -19,33 +19,44 @@ function verifyPassword (hashedPassword) {
 function signup (req, res) {
   const body = req.body
   if (body.fullName && body.username && body.email && body.password) {
-    UserSchema.findOne({
+    return UserSchema.findOne({
       email: body.email,
       username: body.username
-    }).then((user) => {
-      if (!user) {
-        body.password = crypto.AES.encrypt(body.password, process.env.SECRET)
-        UserSchema
-          .create(body)
-            .then((user) => {
-              const token = jwt.sign({
-                username: body.username,
-                _id: user._id
-              },
-              process.env.SECRET)
-
-              return res.status(201).json({
-                status: 201,
-                message: 'Successfully registered',
-                token,
-                username: user.username
-              })
-            })
-      } else {
+    }, (err, user) => {
+      if (err) {
+        return res.status(500).json({
+          status: 409,
+          message: 'Server error while creating user.'
+        })
+      }
+      if (user) {
         return res.status(409).json({
           status: 409,
           message: 'This user already exists.'
         })
+      } else {
+        body.password = crypto.AES.encrypt(body.password, process.env.SECRET)
+        return UserSchema
+          .create(body, (err, user) => {
+            if (err) {
+              return res.status(409).json({
+                err: err,
+                message: 'Something went wrong'
+              })
+            }
+            const token = jwt.sign({
+              username: body.username,
+              _id: user._id
+            },
+            process.env.SECRET)
+
+            return res.status(201).json({
+              status: 201,
+              message: 'Successfully registered',
+              token,
+              username: user.username
+            })
+          })
       }
     })
   } else {
@@ -67,8 +78,12 @@ function login (req, res) {
     UserSchema
       .findOne({
         username: body.username
-      })
-      .then((user) => {
+      }, (err, user) => {
+        if (err) {
+          return res.status(500).json({
+            message: 'Something went wrong'
+          })
+        }
         if (user) {
           if (body.password !== verifyPassword(user.password)) {
             return res.status(400).json({
@@ -183,8 +198,6 @@ function createChannel (req, res) {
         channel: user.channel
       }
       return ChannelSchema.create(body, (err, channel) => {
-        console.log('channel', channel)
-
         if (err) {
           return res.status(500).json({
             message: 'Something went wrong'
@@ -229,7 +242,12 @@ function updateChannel (req, res) {
     }
     if (body && body.channelPicture) {
       return custom.uploadFile(body.channelPicture, {}, (err, image) => { // eslint-disable-line
-
+        if (err) {
+          return res.status(500).json({
+            err: err,
+            message: 'Something wrong with the upload'
+          })
+        }
         body.channelPicture = image.secure_url
         return ChannelSchema.findByIdAndUpdate(channelId, body, (err, channel) => {
           if (err) {
@@ -289,7 +307,6 @@ function subscribe (req, res) {
       }
       let found = channel.analytics
       if (channel.analytics.subscribers.indexOf(userId) === -1) {
-        console.log('analytics found', found.subscribers)
         return ChannelSchema.findByIdAndUpdate(channelId, {
           $push: {
             'analytics.subscribers': userId
@@ -303,7 +320,6 @@ function subscribe (req, res) {
           channel.objectID = channel._id
           found.subscribers.push(userId)
           // found.subscribers = found.subscribers
-          console.log(found.subscribers, 'analytics')
           return channelIndex.partialUpdateObject({
             objectID: channelId,
             analytics: found
@@ -382,13 +398,12 @@ function updateChannelViews (req, res) {
         'analytics.totalViews': userId
       }
     }, (err, channel) => {
-      if (err && !channel) {
+      if (err || !channel) {
         return res.status(500).json({
           message: 'Channel not found'
         })
       }
       channel.objectID = channelId
-      console.log(channel.analytics.totalViews.length, 'channel analytics')
       return channelIndex.partialUpdateObject({
         objectID: channelId,
         analytics: channel.analytics

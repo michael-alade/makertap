@@ -6,10 +6,12 @@ var user = new Schema({
     type: String
   },
   username: {
-    type: String
+    type: String,
+    unique: true
   },
   email: {
-    type: String
+    type: String,
+    unique: true
   },
   password: {
     type: String
@@ -26,7 +28,5 @@ var user = new Schema({
     type: Object
   }
 })
-
-user.index({ fullName: 'text', username: 'text' })
 
 module.exports = mongoose.model('User', user)

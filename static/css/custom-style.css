@@ -561,6 +561,9 @@ input:focus {
 .filter-group {
     border: 1px solid #e5e5e5;
     padding: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
     border-radius: 5px;
 }
 .filter-group {
@@ -570,13 +573,16 @@ input:focus {
     font-size: 11px;
     font-weight: 600;
     display: block;
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
     width: 62px;
     padding-left: 3px;
     padding-right: 3px;
     background: #ffffff;
     margin-top: -18px;
     text-transform: uppercase;
+}
+.filter-group .top-margin {
+    margin-top: 10px;
 }
 .category {
     width: 100%;
@@ -942,4 +948,93 @@ input:focus {
     color: #575260;
     font-weight: 700;
     font-size: 13px;
+}
+
+
+
+/* pop up snackbar */
+
+#snackbar {
+    visibility: hidden;
+    min-width: 300px;
+    /* margin-left: -125px; */
+    background-color: #ffffff;
+    border: 1px solid #cecece91;
+    left: 40px;
+    height: 65px;
+    padding: 4px;
+    border-radius: 50px 50px 50px 50px;
+    position: fixed;
+    z-index: 1;
+    display: flex;
+    /* left: 50%; */
+    bottom: 20px;
+}
+
+#snackbar .details {
+    flex: 1;
+    padding-top: 3px;
+    margin-left: 7px;
+}
+
+#snackbar .details .action {
+    margin-top: -2px;
+    color: #b1acac;
+    font-size: 13px;
+}
+
+#snackbar .details .name {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+#snackbar .details .time {
+    font-size: 11px;
+}
+
+#snackbar .celebration {
+    width: 40px;
+    margin-top: 10px;
+}
+
+
+/* Show the snackbar when clicking on a button (class added with JavaScript) */
+#snackbar.show {
+    visibility: visible; /* Show the snackbar */
+
+/* Add animation: Take 0.5 seconds to fade in and out the snackbar. 
+However, delay the fade out process for 2.5 seconds */
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+/* Show the snackbar when clicking on a button (class added with JavaScript) */
+#snackbar.hide {
+    visibility: hidden; /* Show the snackbar */
+
+/* Add animation: Take 0.5 seconds to fade in and out the snackbar. 
+However, delay the fade out process for 2.5 seconds */
+    -webkit-animation: fadeout 0.5s 2.5s, fadein 0.5s;
+    animation: fadeout 0.5s 2.5s, fadein 0.5s;
+}
+
+/* Animations to fade the snackbar in and out */
+@-webkit-keyframes fadein {
+    from {bottom: 0; opacity: 0;} 
+    to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+    from {bottom: 30px; opacity: 1;} 
+    to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
 }

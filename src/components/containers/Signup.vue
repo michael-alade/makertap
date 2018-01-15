@@ -4,26 +4,26 @@
             <div class="logo-header">
                 <img src="/static/images/logo-makertap.png"/>
             </div>
-            <div v-if="error.showError && !form.verified" class="uk-alert-danger" uk-alert>
+            <div v-if="error.showError" class="uk-alert-danger" uk-alert>
                 <a @click="error.showError = false" class="uk-alert-close" uk-close></a>
                 <p style="font-size: 13px;">{{ error.message }}</p>
             </div>
             <form @submit.prevent="signup" class="uk-grid-small" uk-grid>
                 <div class="uk-width-1-1@s">
                     <label class="uk-form-label">Fullname</label>
-                    <input required v-model="form.fullName" required class="uk-input" type="text">
+                    <input required v-model="form.fullName" class="uk-input" type="text">
                 </div>
                 <div class="uk-width-1-1@s">
                     <label class="uk-form-label">Email</label>
-                    <input required v-model="form.email" required class="uk-input" type="email">
+                    <input required v-model="form.email" class="uk-input" type="email">
                 </div>
                 <div class="uk-width-1-1@s">
                     <label class="uk-form-label">Username</label>
-                    <input required v-model="form.username" required class="uk-input" type="text">
+                    <input required v-model="form.username" class="uk-input" type="text">
                 </div>
                 <div class="uk-width-1-1@s">
                     <label class="uk-form-label">Password</label>
-                    <input required v-model="form.password" required class="uk-input" type="password">
+                    <input required v-model="form.password" class="uk-input" type="password">
                 </div>
                 <div class="uk-width-1-1@s captcha">
                     <vue-recaptcha @expired="onExpired" @verify="onVerify" sitekey="6Lettj8UAAAAAA0ybPFIBheYu4jO8tLBJqM97Mvt"/>
@@ -82,10 +82,15 @@ export default {
     onVerify (response) {
       if (response) {
         this.form.verified = true
+        this.error.showError = false
       }
     },
     onExpired () {
       this.form.verified = false
+      this.error = {
+        showError: true,
+        message: 'Not yet verified! Please click the captcha below.'
+      }
     },
     signup () {
       const self = this
@@ -101,9 +106,16 @@ export default {
           window.location.href = `/user/${res.data.username}`
         }
       }).catch((err) => {
-        self.error = {
-          showError: true,
-          message: 'Login failed. Please try again later.'
+        if (err.response.status === 409) {
+          self.error = {
+            showError: true,
+            message: 'Email address or username already exists.'
+          }
+        } else {
+          self.error = {
+            showError: true,
+            message: 'Login failed. Please try again later.'
+          }
         }
         return err
       })

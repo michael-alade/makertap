@@ -12,7 +12,7 @@
                 <div class="uk-container">
                         <ais-results class="uk-flex-row uk-grid-small uk-child-width-expand@s uk-result" uk-grid>
                           <template slot-scope="{ result }">
-                              <div class="uk-width-1-3@m uk-width-1-2@s" :class="{ 'uk-grid-margin': mobileDetect && mobileDetect.mobile() ? true : false }">
+                              <div class="uk-width-1-3@m uk-width-1-2@s uk-grid-margin">
                                 <!-- {{ result.channelId }} -->
                                 <channel-thumb :result="result || {}" />
                               </div>

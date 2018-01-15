@@ -2,10 +2,13 @@
     <!-- This is the modal with the outside close button -->
     <div id="welcome-modal" uk-modal="esc-close:false; bg-close: false;">
         <div class="uk-modal-dialog uk-modal-body">
-            <button class="uk-modal-close-outside" type="button" uk-close></button>
             <div class="welcome">
-                <h4 class="welcome-text">Welcome, {{ pageProfile.fullName }}</h4>
+                <h4 class="welcome-text">Welcome, {{ pageProfile ? pageProfile.fullName : null }}</h4>
                 <span>Please take a minute to fill the below form</span>
+            </div>
+            <div v-if="error.showError" class="uk-alert-danger" uk-alert>
+                <a @click="error.showError = false" class="uk-alert-close" uk-close></a>
+                <p style="font-size: 13px;">{{ error.message }}</p>
             </div>
             <div class="channel-picture-box">
                 <input type="file" hidden @change="setTemp" ref="uploadPicture">
@@ -45,7 +48,7 @@
                     </select>
                 </div>
                 <div class="uk-width-1-1@s" style="padding-top: 15px;display: flex; align-items: center; justify-content:center">
-                    <button class="uk-button uk-button-round theme-btn">Submit</button>
+                    <button class="uk-button uk-button-round theme-btn" :disabled="loading"><span v-if="loading" class="fa fa-spin fa-spinner"></span> Submit</button>
                 </div>
             </form>
         </div>
@@ -59,6 +62,7 @@ export default {
   props: ['pageProfile'],
   data () {
     return {
+      loading: false,
       show: true,
       tempImgUrl: '/static/images/profile-placeholder.png',
       form: {
@@ -68,6 +72,10 @@ export default {
         embed: {},
         youtubeChannelId: '',
         twitchUsername: ''
+      },
+      error: {
+        showError: false,
+        message: ''
       }
     }
   },
@@ -90,18 +98,34 @@ export default {
           liveUrl: `http://player.twitch.tv/?channel=${this.form.twitchUsername}`
         }
       }
+      this.loading = true
       this.form.channelId = this.pageProfile.channel._id
       return this.$store.dispatch('updateChannel', this.form).then(result => {
-        self.$store.dispatch('getUser', self.$route.params.username)
-        window.UIkit.modal('#welcome-modal', {
-          'sel-close': ''
-        }).hide()
+        self.$store.dispatch('getUser', self.$route.params.username).then(() => {
+          self.loading = false
+          window.UIkit.modal('#welcome-modal', {
+            'sel-close': ''
+          }).hide()
+        })
+      }).catch(err => {
+        if (err.response && err.response.data.message) {
+          self.error = {
+            showError: true,
+            message: err.response.data.message
+          }
+        } else {
+          self.error = {
+            showError: true,
+            message: 'Something went wrong. Try reloading the page.'
+          }
+        }
       })
     },
     setTemp () {
       const self = this
       const reader = new window.FileReader()
       const blob = this.$refs.uploadPicture.files[0]
+      console.log(blob, 'blob')
       this.form.channelPicture = blob
       if (blob) {
         reader.onload = (e) => {

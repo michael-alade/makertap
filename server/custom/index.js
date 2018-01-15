@@ -1,8 +1,10 @@
 var cloudinary = require('cloudinary')
 var algoliasearch = require('algoliasearch')
+var customEmails = require('./emails')
 var moment = require('moment')
-var email = require('@sendgrid/mail')
-email.setApiKey('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')
+
+var sengrid = require('@sendgrid/mail')
+sengrid.setApiKey('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')
 var algolia = algoliasearch('ENDTXRMXJ8', 'c9e07f4492ce146a0e9d16a45c24f54f')
 
 cloudinary.config({
@@ -12,20 +14,25 @@ cloudinary.config({
 })
 
 // const msg = {
-//   to: 'michaelkolafas15@gmail.com',
 //   from: 'no-reply@makertap.com',
-//   subject: 'Sending with SendGrid is Fun',
-//   text: 'and easy to do anywhere, even with Node.js',
-//   html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+//   substitutions: {
+//     name: 'Kolawole Alade',
+//     link: 'http://localhost:2000'
+//   },
+//   subject: 'Testing',
+//   html: customEmails['goLive']
 // }
 
 function uploadFile (file, options, cb) {
   return cloudinary.v2.uploader.upload(file, options, cb)
 }
 
-function sendMail (msg) {
-  return email.send(msg).then(res => {
-  }).catch()
+function sendMail (emails, msg, type) {
+  msg.html = customEmails[type]
+  for (var i = 0; i < emails.length; i++) {
+    msg.to = emails[i]
+    sengrid.send(msg)
+  }
 }
 
 function timeDiff (now, before, type) {
