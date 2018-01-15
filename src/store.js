@@ -1,35 +1,32 @@
 import Vue from 'vue'
-import axios from 'axios'
 import Vuex from 'vuex'
+import actions from './actions'
+import mutations from './mutations'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    isAuthenticated: false,
     currentUser: null,
-    mine: null
+    mine: null,
+    searchStore: null,
+    pageProfile: null,
+    videos: null,
+    searchQuery: null,
+    hideNavbar: false,
+    videoSearchLoading: false
   },
-  actions: {
-    getCurrentUser ({ commit }) {
-      return axios.get('http://localhost:3000/me')
-        .then((res) => {
-          commit('setCurrentUser', res.data)
-          return res
-        })
-    }
-  },
+  actions,
   mutations: {
-    setCurrentUser: (state, payload) => {
-      state.currentUser = payload
-      // Vue.set(state, 'currentUser', payload)
+    searchQuery (state, query) {
+      state.searchQuery = query
     },
-    setMine: (state, payload) => {
-      state.mine = payload
-      // Vue.set(state, 'currentUser', payload)
-    }
+    ...mutations
   },
   getters: {
     getCurrentUser (state) { return state.currentUser },
+    videoSearchLoading (state) { return state.videoSearchLoading },
     getMine (state) { return state.mine }
   }
 })

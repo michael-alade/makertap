@@ -1,13 +1,19 @@
 import { app, store } from './app.js'
+// import Vue from 'vue'
+// import mobileDetect from './customPlugin/mobileDetect.js'
 
 // get the initialstate from server-rendering.
-store.replaceState(window.__INITIAL_STATE__)
+if (window.__INITIAL_STATE__ !== 'init_state') {
+  store.replaceState(window.__INITIAL_STATE__)
+}
 
+// Vue.use(mobileDetect)
 window.__INITIAL_STATE__ = {}
+var initialState = document.getElementById('state')
+// document.getElementById('mobile-menu').remove()
+initialState.innerHTML = 'empty'
 
 app.$mount('#app')
-
-// import Vue from 'vue'
 
 // import App from './App'
 // import router from './router'

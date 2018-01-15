@@ -1,5 +1,9 @@
 var UserSchema = require('../models/user.model')
 var VideoSchema = require('../models/video.model')
+var ChannelSchema = require('../models/channel.model')
+var custom = require('../custom')
+
+var channelIndex = custom.algolia.initIndex('channel_index')
 
 /**
  * goLive
@@ -7,48 +11,61 @@ var VideoSchema = require('../models/video.model')
  * @param {*} res
  */
 function goLive (req, res) {
-  let body = req.body
-  const userId = req.decoded._id
-  UserSchema
-    .findById(userId)
-    .then(user => {
-      if (user) {
-        body.creator = {
-          _id: user._id,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          username: user.username
+  const channelId = req.params.channelId
+  return ChannelSchema.findByIdAndUpdate(channelId, { status: 'live' }, (err, channel) => {
+    if (err) {
+      return res.status(500).json({
+        message: 'Server error: could not go live.'
+      })
+    }
+    if (channel.analytics.subscribers.length) {
+      return UserSchema.find({
+        _id: { $in: channel.analytics.subscribers }
+      }, (err, subscribers) => {
+        if (err || !subscribers) {
+          console.log('could not find subscribers')
         }
-        body.status = 'live'
-        VideoSchema.create(body, (err, result) => {
-          if (err) {
-            return res.status(500).json({
-              status: 500,
-              err: err,
-              message: 'Something went wrong.'
-            })
+        if (subscribers) {
+          const emails = subscribers.map(sub => {
+            return sub.email
+          })
+          const msg = {
+            from: 'no-reply@makertap.com',
+            substitutions: {
+              name: `${channel.user.fullName}`,
+              link: `http://localhost:3000/user/${channel.user.username}`
+            },
+            subject: `${channel.user.fullName} just started a livestream - Makertap`
           }
-          UserSchema.findByIdAndUpdate(userId, { live: result }, (err, result) => {
-            if (err) {
-              return res.status(500).json({
-                status: 500,
-                message: 'Something went wrong.'
-              })
-            }
-            return res.status(201).json({
-              status: 201,
-              message: 'Video created.'
-            })
+          custom.sendMail(emails, msg, 'goLive')
+        }
+        const update = {
+          status: 'live',
+          objectID: channelId
+        }
+        return channelIndex.partialUpdateObject(update, (err, content) => {
+          if (err) {
+            console.log('Error: Channel not go live on algolia -- ' + channelId)
+          }
+          return res.status(200).json({
+            message: 'Channel is live'
           })
         })
+      })
+    }
+    const update = {
+      status: 'live',
+      objectID: channelId
+    }
+    return channelIndex.partialUpdateObject(update, (err, content) => {
+      if (err) {
+        console.log('Error: Channel not go live on algolia -- ' + channelId)
       }
-    }).catch(err => {
-      return res.status(500).json({
-        status: 500,
-        err: err,
-        message: 'Something went wrong.'
+      return res.status(200).json({
+        message: 'Channel is live'
       })
     })
+  })
 }
 
 /**
@@ -57,87 +74,84 @@ function goLive (req, res) {
  * @param {*} res
  */
 function stopLive (req, res) {
-  const body = req.body
-  const userId = req.decoded._id
-  VideoSchema.findByIdAndUpdate(body._id, { status: 'offline' }, (err, result) => {
+  const channelId = req.params.channelId
+  return ChannelSchema.findByIdAndUpdate(channelId, { status: 'offline' }, (err, channel) => {
     if (err) {
-      return res.status(404).json({
-        status: 404,
-        message: 'Video was not found'
+      return res.status(500).json({
+        message: 'Server error: could not stop live.'
       })
     }
-    UserSchema.findByIdAndUpdate(userId, { 'live.status': 'offline' }, (err, result) => {
+    const update = {
+      status: 'offline',
+      objectID: channelId
+    }
+    return channelIndex.partialUpdateObject(update, (err, content) => {
       if (err) {
-        return res.status(500).json({
-          status: 500,
-          message: 'Something went wrong.'
-        })
+        console.log('Error: Channel could not stop live on algolia -- ' + channelId)
       }
       return res.status(200).json({
-        status: 200,
-        message: 'Live stream successfully stopped'
+        message: 'Channel is offline'
       })
     })
   })
 }
 
-/**
- * search
- * @param {*} req
- * @param {*} res
- */
-function search (req, res) {
-  const keyword = req.query.query
-  const categories = req.query.categories && req.query.categories.length
-    ? req.query.categories.split(',') : null
-  const limit = req.query.limit
-  const status = req.query.status
-  let query = {}
-  if (keyword) {
-    query = {
-      $text: {
-        $search: keyword
-      }
-    }
-  }
-  if (categories) {
-    Object.assign(query, {
-      tags: {
-        $in: categories
-      }
-    })
-  }
-  // if (limit) {
-  //   query.$limit = Number(limit)
-  // }
-  if (status) {
-    query.status = status
-  }
-  return VideoSchema
-    .find(query)
-    .sort({
-      createdDate: -1
-    })
-    .limit(limit)
-    .exec((err, videos) => {
-      if (err) {
-        return res.status(500).json({
-          status: 500,
-          error: err,
-          message: 'An error occurred.'
-        })
-      }
-      if (videos) {
-        return res.status(200).json({
-          data: videos,
-          limit: limit || null
-        })
-      }
-    })
-}
+// /**
+//  * search
+//  * @param {*} req
+//  * @param {*} res
+//  */
+// function search (req, res) {
+//   const keyword = req.query.query
+//   const categories = req.query.categories && req.query.categories.length
+//     ? req.query.categories.split(',') : null
+//   const limit = req.query.limit
+//   const status = req.query.status
+//   let query = {}
+//   if (keyword) {
+//     query = {
+//       $text: {
+//         $search: keyword
+//       }
+//     }
+//   }
+//   if (categories) {
+//     Object.assign(query, {
+//       tags: {
+//         $in: categories
+//       }
+//     })
+//   }
+//   // if (limit) {
+//   //   query.$limit = Number(limit)
+//   // }
+//   if (status) {
+//     query.status = status
+//   }
+//   return VideoSchema
+//     .find(query)
+//     .sort({
+//       createdDate: -1
+//     })
+//     .limit(limit)
+//     .exec((err, videos) => {
+//       if (err) {
+//         return res.status(500).json({
+//           status: 500,
+//           error: err,
+//           message: 'An error occurred.'
+//         })
+//       }
+//       if (videos) {
+//         return res.status(200).json({
+//           data: videos,
+//           limit: limit || null
+//         })
+//       }
+//     })
+// }
 
 module.exports = {
   goLive,
-  stopLive,
-  search
+  stopLive
 }

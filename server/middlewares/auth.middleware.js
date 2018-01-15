@@ -12,7 +12,6 @@ function auth (req, res, next) {
         })
       }
       UserSchema.findOne({
-        email: decoded.email,
         username: decoded.username
       }).then(user => {
         if (user) {

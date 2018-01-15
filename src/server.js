@@ -4,7 +4,6 @@ const meta = app.$meta()
 export default (context) => {
   router.push(context.url)
   return new Promise((resolve, reject) => {
-    console.log(context.url, 'url to redirect to')
     router.onReady(() => {
       const matchedComponents = router.getMatchedComponents()
       if (!matchedComponents.length) {
@@ -17,7 +16,6 @@ export default (context) => {
       // call `asyncData()` on all matched route components
       Promise.all(matchedComponents.map(Component => {
         if (Component.preFetch) {
-          // console.log(Component, 'component')
           return Component.preFetch({
             store,
             route: router.currentRoute

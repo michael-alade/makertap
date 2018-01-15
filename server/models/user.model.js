@@ -2,22 +2,29 @@ var mongoose = require('./connect.js')
 var Schema = mongoose.Schema
 
 var user = new Schema({
-  firstName: {
-    type: String
-  },
-  lastName: {
+  fullName: {
     type: String
   },
   username: {
-    type: String
+    type: String,
+    unique: true
   },
   email: {
-    type: String
+    type: String,
+    unique: true
   },
   password: {
     type: String
   },
-  live: {
+  verified: {
+    type: Boolean,
+    default: false
+  },
+  welcome: {
+    type: Boolean,
+    default: false
+  },
+  channel: {
     type: Object
   }
 })
