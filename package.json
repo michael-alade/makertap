@@ -7,6 +7,8 @@
   "scripts": {
     "dev": "node build/dev-server.js",
     "build": "node build/build.js",
+    "clean-git": "git stash save --keep-index --include-untracked && git stash drop",
+    "deploy": "pm2 stop server && npm run build && PORT=8080 pm2 start server && sudo service mongod stop && mongod",
     "build-dev": "npm run build && clear && nodemon server",
     "lint": "eslint --ext .js,.vue src"
   },
