@@ -49,7 +49,15 @@ function signup (req, res) {
               _id: user._id
             },
             process.env.SECRET)
-
+            const nameArr = body.fullName.split(' ')
+            if (nameArr.length >= 2) {
+              req.io.emit('snackbar', {
+                action: 'joined',
+                picture: `https://avatar.tobi.sh/241.svg?text=${nameArr[0][0]}${nameArr[1][0]}`,
+                name: nameArr[0],
+                time: Date.now()
+              })
+            }
             return res.status(201).json({
               status: 201,
               message: 'Successfully registered',
@@ -123,18 +131,30 @@ function login (req, res) {
  */
 function getUser (req, res) {
   const username = req.params.username
-  UserSchema.findOne({
+  return UserSchema.findOne({
     username: username
-  }).then(user => {
+  }, (err, user) => {
+    if (err) {
+      return res.status(500).json({
+        error: err,
+        status: 500
+      })
+    }
     if (!user) {
       return res.status(404).json({
         status: 404,
         message: 'User not found'
       })
     }
-    ChannelSchema.findOne({
+    return ChannelSchema.findOne({
       'userId': user._id
-    }).then(channel => {
+    }, (err, channel) => {
+      if (err) {
+        return res.status(500).json({
+          error: err,
+          status: 500
+        })
+      }
       if (channel) {
         return res.status(200).json({
           user: {
@@ -149,16 +169,6 @@ function getUser (req, res) {
           status: 200
         })
       }
-    }).catch(err => {
-      return res.status(500).json({
-        error: err,
-        status: 500
-      })
-    })
-  }).catch(err => {
-    return res.status(500).json({
-      error: err,
-      status: 500
     })
   })
 }

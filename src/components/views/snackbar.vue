@@ -1,12 +1,12 @@
 <template>
     <div id="snackbar">
         <div class="picture">
-          <img style="height: 65px;border-radius: 50px;" src="https://pbs.twimg.com/profile_images/946823287186665472/iNHVNpi4.jpg"/>
+          <img style="height: 65px;border-radius: 50px;" :src="snackbar.picture"/>
         </div>
         <div class="details">
           <div class="name"><span>{{ snackbar.name }}</span></div>
           <div class="action"><span>{{ snackbar.action === 'joined' ? 'Just signed up on Makertap': 'Just started a livestream' }}</span></div>
-          <div class="time"><span>{{ snackbar.time }}</span></div>
+          <div class="time"><span>{{ timeNow(snackbar.time) }}</span></div>
         </div>
         <div class="celebration">
           <img src="/static/images/party-celebration.png"/>
@@ -15,35 +15,33 @@
 </template>
 
 <script>
+import io from 'socket.io-client'
+import moment from 'moment'
+import config from '../../modules/config.js'
+
+const socket = io(config.api)
+
 export default {
   data () {
     return {
       snackbar: {
         action: '',
         time: '',
-        name: ''
+        name: '',
+        picture: ''
       },
       count: 1,
-      done: [],
-      queued: [{
-        name: 'Pieter',
-        action: 'joined',
-        time: '8 minutes ago'
-      },
-      {
-        name: 'Kolawole',
-        action: 'live',
-        time: '2 minutes ago'
-      },
-      {
-        name: 'Michael',
-        action: 'joined',
-        time: '1 hour ago'
-      }]
+      queued: []
     }
   },
   mounted () {
     const self = this
+    socket.on('connect', () => {
+      console.log('connected socket')
+    })
+    socket.on('snackbar', (payload) => {
+      self.queued.push(payload)
+    })
     var x = document.getElementById('snackbar')
 
     // // Add the "show" class to DIV
@@ -55,34 +53,32 @@ export default {
     setInterval(function () {
       if (x.className === 'show') {
         x.className = ''
-      } else {
+        self.snackbar = {
+          action: '',
+          time: '',
+          name: '',
+          picture: ''
+        }
+        return ''
+      } 
+      if (self.queued.length) {
         if (self.count > self.queued.length) {
           self.count = 1
         }
         self.snackbar = self.queued[self.count - 1]
+        self.queued.splice(self.count - 1, 1)
         x.className = 'show'
         self.count++
-        // setTimeout(() => {
-        //   x.className = ''
-        // }, 2000)
+        // if (self.queued.length <= 0) {
+        //   self.count = 1
+        // }
       }
-      // if (self.done >= 0) {
-      //   console.log(self.done, 'self')
-      //   if (x.className === 'show') {
-      //     x.className = ''
-      //   } else {
-      //     x.className = 'show'
-      //   }
-      //   self.snackbar = self.snacks[self.done]
-      //   if (self.done < self.snacks.length) {
-      //     setTimeout(() => {
-      //       self.done++
-      //     }, 1000)
-      //   } else {
-      //     self.done = 0
-      //   }
-      // }
     }, 3000)
+  },
+  methods: {
+    timeNow (time) {
+      return moment(time).fromNow(); 
+    }
   }
 }
 </script>

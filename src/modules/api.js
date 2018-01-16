@@ -1,7 +1,8 @@
 import axios from 'axios'
+import config from './config'
 
 let axiosInstance = axios.create({
-  baseURL: 'http://localhost:3000'
+  baseURL: config.api
   /* other custom settings */
 })
 

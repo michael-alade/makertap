@@ -47,6 +47,15 @@ function goLive (req, res) {
           if (err) {
             console.log('Error: Channel not go live on algolia -- ' + channelId)
           }
+          const nameArr = channel.user.fullName.split(' ')
+          if (nameArr.length >= 2) {
+            req.io.emit('snackbar', {
+              action: 'live',
+              picture: channel.channelPicture || `https://avatar.tobi.sh/241.svg?text=${nameArr[0][0]}${nameArr[1][0]}`,
+              name: nameArr[0],
+              time: Date.now()
+            })
+          }
           return res.status(200).json({
             message: 'Channel is live'
           })
@@ -60,6 +69,15 @@ function goLive (req, res) {
     return channelIndex.partialUpdateObject(update, (err, content) => {
       if (err) {
         console.log('Error: Channel not go live on algolia -- ' + channelId)
+      }
+      const nameArr = channel.user.fullName.split(' ')
+      if (nameArr.length >= 2) {
+        req.io.emit('snackbar', {
+          action: 'live',
+          picture: channel.channelPicture || `https://avatar.tobi.sh/241.svg?text=${nameArr[0][0]}${nameArr[1][0]}`,
+          name: nameArr[0],
+          time: Date.now()
+        })
       }
       return res.status(200).json({
         message: 'Channel is live'

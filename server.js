@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser')
 const path = require('path')
 const UserModel = require('./server/models/user.model')
 var jwt = require('jsonwebtoken')
+var socket = require('socket.io')
 const dotenv = require('dotenv')
 const cors = require('cors')
 const routes = require('./server/routes')
@@ -13,9 +14,12 @@ const code = fs.readFileSync(path.join(__dirname, './dist/server.js'), 'utf8')
 const renderer = require('vue-server-renderer').createBundleRenderer(code)
 let index = fs.readFileSync(path.join(__dirname, './dist/index.html'), 'utf8')
 const app = express()
+var server = require('http').Server(app)
+socket = socket(server)
 const router = express.Router()
 const port = process.env.PORT || 3000
 
+server.listen(port)
 const dependencies = `
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
 <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
@@ -76,6 +80,10 @@ app.use(bodyParser.json({ limit: '50mb' }))
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
 // API
 routes(router)
+app.use((req, res, next) => {
+  req.io = socket
+  return next()
+})
 app.use('/api', router)
 
 app.use('/static', express.static(path.join(__dirname, './dist/static')))
@@ -149,6 +157,6 @@ app.get('*', (req, res) => {
   })
 })
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`App Listening to ${port}`)
 })
