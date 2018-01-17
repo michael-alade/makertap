@@ -1,5 +1,7 @@
 var jwt = require('jsonwebtoken')
 var crypto = require('crypto-js')
+var dotenv = require('dotenv')
+dotenv.config()
 var UserSchema = require('../models/user.model')
 var ChannelSchema = require('../models/channel.model')
 var custom = require('../custom')
@@ -66,7 +68,8 @@ function signup (req, res) {
               subject: 'Email verification - Makertap',
               substitutions: {
                 name: body.fullName,
-                link: `https://makertap.com/verify-email?i=${body.emailToken}`,
+                link: process.env.NODE_ENV === 'development' ? `http://makertap.staging:3000/verify-email?i=${body.emailToken}`
+                : `https://makertap.com/verify-email?i=${body.emailToken}`,
                 email: body.email,
                 username: body.username
               }
@@ -155,7 +158,8 @@ function login (req, res) {
               subject: 'Email verification - Makertap',
               substitutions: {
                 name: user.fullName,
-                link: `http://localhost:3000/verify-email?i=${user.emailToken}`,
+                link: process.env.NODE_ENV === 'development' ? `https://makertap.com/verify-email?i=${user.emailToken}`
+                : `https://makertap.com/verify-email?i=${user.emailToken}`,
                 email: user.email,
                 username: user.username
               }
