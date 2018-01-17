@@ -34,10 +34,8 @@ export default {
     }
   },
   mounted () {
-    console.log(process.env, 'process')
     const self = this
     socket.on('connect', () => {
-      console.log('connected socket')
     })
     socket.on('snackbar', (payload) => {
       self.queued.push(payload)

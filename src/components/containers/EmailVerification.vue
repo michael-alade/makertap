@@ -44,7 +44,6 @@ export default {
   mounted () {
     const self = this
     var token = this.$route.query.i
-    console.log(token, 'token')
     if (!token) {
       window.location.href = '/'
       return

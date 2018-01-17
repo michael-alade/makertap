@@ -103,7 +103,6 @@ function verifyEmail (req, res) {
           message: 'Server error'
         })
       }
-      console.log(user, 'user')
       if (user) {
         user.emailToken = ''
         user.verified = true

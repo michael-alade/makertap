@@ -87,9 +87,6 @@ export default {
   beforeDestroy () {
     this.$store.dispatch('hideNavbar', false)
   },
-  mounted () {
-    console.log(this.$route, 'route')
-  },
   methods: {
     onVerify (response) {
       if (response) {
