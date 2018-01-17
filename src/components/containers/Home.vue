@@ -3,17 +3,20 @@
         <hero />
         <featured />
         <footer-view />
+        <me/>
     </div>
 </template>
 
 <script>
 import Hero from '../views/hero'
+import Me from '../views/me'
 import Featured from '../views/featured-streams'
 import FooterView from '../views/footer'
 
 export default {
   components: {
     Hero,
+    Me,
     Featured,
     FooterView
   },

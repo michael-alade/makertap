@@ -41,10 +41,12 @@
               A verification link has been sent to your email {{ form.email }}
             </div>
         </div>
+        <me />
     </section>
 </template>
 
 <script>
+import Me from '../views/me'
 import VueRecaptcha from 'vue-recaptcha'
 export default {
   data () {
@@ -69,7 +71,8 @@ export default {
     return store.dispatch('hideNavbar', true)
   },
   components: {
-    VueRecaptcha
+    VueRecaptcha,
+    Me
   },
   metaInfo: {
     title: 'Signup',

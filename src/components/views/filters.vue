@@ -8,7 +8,7 @@
                         <div class="uk-width-1-1@m">
                             <div class="uk-inline input-container">
                                 <span class="uk-form-icon" uk-icon="icon: search"></span>
-                                <input type="text" v-model="search.input" class="uk-input filter search" placeholder="Find inspiring product live streams" />
+                                <input type="text" v-model="search.input" class="uk-input filter search" placeholder="Find inspiring inspiring channels" />
                             </div>
                         </div>
                         <div class="uk-width-1-1@m uk-grid-margin" :class="{ 'uk-grid-margin': mobileDetect && mobileDetect.mobile() ? true : false }" v-if="showFilter">
@@ -59,7 +59,7 @@ export default {
     return {
       selectedInterests: [],
       keyword: '',
-      showFilter: true,
+      showFilter: false,
       mobileDetect: null,
       filters: [
         { name: 'Internet Software', value: 'internet-software' },

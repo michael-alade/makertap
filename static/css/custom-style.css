@@ -258,16 +258,19 @@
     position: fixed;
     bottom: 0;
     right: 0;
+    color: #8e8c8c;
     font-size: 14px;
+    border-right: none;
+    border: 1px solid #e2dcdc;
     cursor: pointer;
     text-decoration: none;
     height: auto;
     border-radius: 8px 0px 0px;
     padding: 8px;
-    background: #8fafd2;
+    background: #ffffff;
 }
 .me:hover {
-    color: #fff;
+    color: #8e8c8c;
     text-decoration: none;
 }
 

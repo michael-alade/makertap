@@ -1,14 +1,14 @@
 <template>
   <div class="featured">
       <div class="featured-avatar uk-cover-container">
-          <img style="width: inherit; height: inherit" class="uk-cover" :src="result && result.channelPicture ? result.channelPicture : 'https://pbs.twimg.com/profile_images/946823287186665472/iNHVNpi4.jpg'">
+          <img style="width: inherit; height: inherit" class="uk-cover" :src="result && result.channelPicture ? result.channelPicture : null">
           <div class="uk-overlay uk-position-top">
           </div>
       </div>
       <div class="featured-details">
           <div class="name">
-              <div class="fullname">{{ result && result.user.fullName ? result.user.fullName : 'Pieter Levels' }}</div>
-              <div class="username">@{{ result && result.user.username ? result.user.username : 'levelsio' }}</div>
+              <div class="fullname">{{ result && result.user.fullName ? result.user.fullName : null }}</div>
+              <div class="username">@{{ result && result.user.username ? result.user.username : null }}</div>
               <div class="description">
                   <div><span class="fa fa-eye"></span> {{ result ? result.analytics.totalViews.length : null }}</div>
                   <div><span class="fa fa-users"></span> {{ result ? result.analytics.subscribers.length: null }}</div>

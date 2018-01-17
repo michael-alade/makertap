@@ -8,9 +8,6 @@
             <a href="" class="uk-icon-button instagram-btn" uk-icon="icon: instagram"></a>
           </div>
         </section>
-        <a v-if="mobileDetect && !mobileDetect.mobile()" href="https://twitter.com/alademk" target="_blank" class="me text-white">
-            <span class="uk-icon uk-icon-image" style="background-image: url('images/hero-image-three.jpeg');"></span> alademk
-        </a>
     </div>
 </template>
 

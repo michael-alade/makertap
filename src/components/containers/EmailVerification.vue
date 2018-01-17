@@ -20,11 +20,16 @@
               <a href="/login" class="uk-button uk-button-round theme-btn text-white">Login</a>
             </div>
         </div>
+        <me />
     </section>
 </template>
 
 <script>
+import Me from '../views/me'
 export default {
+  components: {
+    Me
+  },
   data () {
     return {
       loading: true

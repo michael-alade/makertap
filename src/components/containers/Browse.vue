@@ -13,8 +13,7 @@
                         <ais-results class="uk-flex-row uk-grid-small uk-child-width-expand@s uk-result" uk-grid>
                           <template slot-scope="{ result }">
                               <div class="uk-width-1-3@m uk-width-1-2@s uk-grid-margin">
-                                <!-- {{ result.channelId }} -->
-                                <channel-thumb :result="result || {}" />
+                                <channel-thumb v-if="result && result.channelPicture" :result="result || {}" />
                               </div>
                           </template>
                         </ais-results>
@@ -44,10 +43,12 @@
         <!-- <filters /> -->
         <!-- <no-result v-if="!videos.length" /> -->
         <!-- <filter-result v-if="videos.length" /> -->
+        <me/>
     </div>
 </template>
 
 <script>
+import Me from '../views/me'
 import Filters from '../views/filters'
 import ChannelThumb from '../views/channel-thumb'
 import MobileDetect from 'mobile-detect'
@@ -97,6 +98,7 @@ export default {
   components: {
     Filters,
     NoResult,
+    Me,
     ChannelThumb,
     FooterView,
     FilterResult

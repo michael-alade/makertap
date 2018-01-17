@@ -33,10 +33,15 @@
               A verification link has been sent to your email {{ email }}
             </div>
         </div>
+        <a v-if="mobileDetect && !mobileDetect.mobile()" href="https://twitter.com/alademk" target="_blank" class="me text-white">
+            <span class="uk-icon uk-icon-image" style="border-radius: 50%;background-image: url('https://pbs.twimg.com/profile_images/830419625787666432/6d9I2PuH_400x400.jpg');"></span> alademk
+        </a>
+        <me/>
     </section>
 </template>
 
 <script>
+import Me from '../views/me'
 import VueRecaptcha from 'vue-recaptcha'
 export default {
   data () {
@@ -59,7 +64,8 @@ export default {
     return store.dispatch('hideNavbar', true)
   },
   components: {
-    VueRecaptcha
+    VueRecaptcha,
+    Me
   },
   metaInfo: {
     title: 'Login',
