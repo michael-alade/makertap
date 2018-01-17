@@ -8,6 +8,7 @@ const UserModel = require('./server/models/user.model')
 var jwt = require('jsonwebtoken')
 var socket = require('socket.io')
 const dotenv = require('dotenv')
+dotenv.config()
 const cors = require('cors')
 const routes = require('./server/routes')
 const code = fs.readFileSync(path.join(__dirname, './dist/server.js'), 'utf8')
@@ -19,6 +20,7 @@ socket = socket(server)
 const router = express.Router()
 const port = process.env.PORT || 3000
 
+console.log(process.env.PORT, 'port')
 const dependencies = `
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
 <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
@@ -32,8 +34,6 @@ const dependencies = `
 <script src="https://www.google.com/recaptcha/api.js?onload=vueRecaptchaApiLoaded&render=explicit" async defer>
 </script>
 `
-
-dotenv.config()
 
 const getCurrentUser = (cookies) => {
   var token = cookies.mktoken

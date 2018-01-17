@@ -17,9 +17,8 @@
 <script>
 import io from 'socket.io-client'
 import moment from 'moment'
-import config from '../../modules/config.js'
 
-const socket = io(config.api)
+const socket = io(process.env.API_URL)
 
 export default {
   data () {
@@ -35,6 +34,7 @@ export default {
     }
   },
   mounted () {
+    console.log(process.env, 'process')
     const self = this
     socket.on('connect', () => {
       console.log('connected socket')
@@ -60,7 +60,7 @@ export default {
           picture: ''
         }
         return ''
-      } 
+      }
       if (self.queued.length) {
         if (self.count > self.queued.length) {
           self.count = 1
@@ -77,7 +77,7 @@ export default {
   },
   methods: {
     timeNow (time) {
-      return moment(time).fromNow(); 
+      return moment(time).fromNow()
     }
   }
 }

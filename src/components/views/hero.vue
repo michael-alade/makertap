@@ -11,7 +11,8 @@
                         </div>
                     </div>
                     <div class="hero-video-box uk-visible@m">
-                        <youtube id="hero-video" video-id="tVg_EtR__O4" player-width="100%" :player-vars="heroPlayer" player-height="315"></youtube>
+                        <iframe id="hero-video" width="100%" height="315" src="https://www.youtube.com/embed/tVg_EtR__O4?autoplay=0&loop=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                        <!-- <iframe id="hero-video" video-id="" player-width="100%" :player-vars="heroPlayer" player-height="315"></youtube> -->
                         <!-- <div class="hero-video-overlay">
                             <div class="overlay-top">
                                 <span class="fa fa-4x fa-pause"></span>

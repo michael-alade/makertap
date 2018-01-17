@@ -5,7 +5,7 @@
                     Live Chat
                 </div>
                 <div class="chats" id="chats-s">
-                    <div class="chat-messages" id="chat-scroll">
+                    <!-- <div class="chat-messages" id="chat-scroll">
                         <div style="padding: 10px;">
                             <div class="chat" v-for="message in messages" :key="message.key">
                                 <div class="chat-avatar">
@@ -13,15 +13,20 @@
                                 </div>
                                 <div class="chat-message">
                                     {{ message.message }}
-                                    <!-- Hello, Some text and me and this and check what I have to say about you and me -->
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
+                    <div style="text-align: center;font-size: 13px;padding-top: 20px;">
+                                              This feature is still in development.<br/>
+                                              Do you want this feature?<br/><br/>
+                                              <button class="uk-button">Yes</button>
+                                              <button class="uk-button">No</button>
+                                            </div>
                 </div>
                 <div class="chat-input">
                     <div class="input-box">
-                        <textarea v-model="inputText" @keyup.enter="submit"  placeholder="Type a message then press 'Enter' to submit" class=""></textarea>
+                        <textarea disabled v-model="inputText" @keyup.enter="submit"  placeholder="Type a message then press 'Enter' to submit" class=""></textarea>
                     </div>
                 </div>
             </div>

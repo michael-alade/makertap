@@ -15,6 +15,10 @@ module.exports = (router) => {
     .post(auth, user.createChannel)
 
   router
+    .route('/user/email-verify')
+    .post(user.verifyEmail)
+
+  router
     .route('/user/channel/:channelId/subscribe')
     .put(auth, user.subscribe)
 

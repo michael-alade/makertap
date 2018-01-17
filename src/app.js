@@ -6,7 +6,9 @@ import App from './App.vue'
 import router from './router.js'
 import store from './store.js'
 
-Vue.config.devtools = true
+if (process.env.NODE_ENV === 'development') {
+  Vue.config.devtools = true
+}
 Vue.use(VueYouTubeEmbed)
 Vue.use(VueInstantSearch)
 sync(store, router)

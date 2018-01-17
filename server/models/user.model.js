@@ -16,6 +16,9 @@ var user = new Schema({
   password: {
     type: String
   },
+  emailToken: {
+    type: String
+  },
   verified: {
     type: Boolean,
     default: false

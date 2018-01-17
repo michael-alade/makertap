@@ -7,6 +7,7 @@ import Meta from 'vue-meta'
 import Home from './components/containers/Home'
 import Browse from './components/containers/Browse'
 import Profile from './components/containers/Profile'
+import EmailVerification from './components/containers/EmailVerification'
 import Login from './components/containers/Login'
 import Signup from './components/containers/Signup'
 // import About from './components/containers/About'
@@ -37,6 +38,7 @@ const router = new VueRouter({
     { path: '/', component: Home },
     { path: '/explore', component: Browse },
     { path: '/login', component: Login },
+    { path: '/verify-email', component: EmailVerification },
     // { path: '/logout', beforeEnter: logout },
     { path: '/signup', component: Signup },
     // { path: '/about', component: About },

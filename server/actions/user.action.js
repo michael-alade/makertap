@@ -35,7 +35,9 @@ function signup (req, res) {
           message: 'This user already exists.'
         })
       } else {
+        body.verified = false
         body.password = crypto.AES.encrypt(body.password, process.env.SECRET)
+        body.emailToken = crypto.HmacSHA1(body.email, process.env.SECRET)
         return UserSchema
           .create(body, (err, user) => {
             if (err) {
@@ -58,6 +60,17 @@ function signup (req, res) {
                 time: Date.now()
               })
             }
+            custom.sendMail([body.email], {
+              from: 'no-reply@makertap.com',
+              name: 'Makertap',
+              subject: 'Email verification - Makertap',
+              substitutions: {
+                name: body.fullName,
+                link: `https://makertap.com/verify-email?i=${body.emailToken}`,
+                email: body.email,
+                username: body.username
+              }
+            }, 'emailVerify')
             return res.status(201).json({
               status: 201,
               message: 'Successfully registered',
@@ -71,6 +84,38 @@ function signup (req, res) {
     return res.status(400).json({
       status: 400,
       message: 'Fill in the required fields'
+    })
+  }
+}
+
+function verifyEmail (req, res) {
+  const token = req.body.i
+  console.log(token, 'token')
+  if (token) {
+    return UserSchema.findOneAndUpdate({
+      emailToken: token
+    }, { emailToken: '', verified: true }, (err, user) => {
+      if (err) {
+        return res.status(500).json({
+          message: 'Server error'
+        })
+      }
+      console.log(user, 'user')
+      if (user) {
+        user.emailToken = ''
+        user.verified = true
+        user.update()
+        return res.status(200).json({
+          message: 'Email verified'
+        })
+      }
+      return res.status(400).json({
+        message: 'Bad request'
+      })
+    })
+  } else {
+    return res.status(400).json({
+      message: 'Bad request'
     })
   }
 }
@@ -103,11 +148,26 @@ function login (req, res) {
             username: user.username,
             _id: user._id
           }, process.env.SECRET)
+          if (!user.verified) {
+            custom.sendMail([user.email], {
+              from: 'no-reply@makertap.com',
+              name: 'Makertap',
+              subject: 'Email verification - Makertap',
+              substitutions: {
+                name: user.fullName,
+                link: `http://localhost:3000/verify-email?i=${user.emailToken}`,
+                email: user.email,
+                username: user.username
+              }
+            }, 'emailVerify')
+          }
           return res.status(200).json({
             status: 200,
             message: 'Successfully logged In',
             userId: user._id,
+            email: user.email,
             username: user.username,
+            emailVerified: user.verified,
             token
           })
         }
@@ -452,6 +512,7 @@ module.exports = {
   login,
   getUser,
   updateChannel,
+  verifyEmail,
   createChannel,
   unSubscribe,
   updateChannelViews,

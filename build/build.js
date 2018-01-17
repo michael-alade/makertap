@@ -2,6 +2,7 @@
 
 require('./check-versions')()
 require('shelljs/global')
+
 env.NODE_ENV = 'production'
 
 const path = require('path')

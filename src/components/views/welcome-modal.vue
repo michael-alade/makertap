@@ -95,7 +95,7 @@ export default {
       } else if (this.form.platform === 'twitch') {
         this.form.embed = {
           platform: this.form.platform,
-          liveUrl: `http://player.twitch.tv/?channel=${this.form.twitchUsername}`
+          liveUrl: `https://player.twitch.tv/?channel=${this.form.twitchUsername}`
         }
       }
       this.loading = true

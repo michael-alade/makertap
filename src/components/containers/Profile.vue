@@ -8,9 +8,9 @@
                             <div class="uk-flex-row uk-grid-small uk-child-width-expand@s" uk-grid>
                                 <div class="uk-width-1-2@m">
                                     <ul uk-tab class="" uk-switcher>
-                                        <li class="uk-active"><a href="#">Live</a></li>
-                                        <li class=""><a href="#">Videos</a></li>
-                                        <li class=""><a href="#">SCHEDULE</a></li>
+                                        <li :class="{ 'uk-active': selectedTab === 'live' }" @click="selectedTab = 'live'"><a href="#">Live</a></li>
+                                        <li :class="{ 'uk-active': selectedTab === 'videos' }" @click="selectedTab = 'videos'"><a href="#">Videos</a></li>
+                                        <!-- <li :class="{ 'uk-active': selectedTab === 'schedule' }" @click="selectedTab = 'schedule'"><a href="#">SCHEDULE</a></li> -->
                                     </ul>
                                 </div>
                                 <div class="uk-width-1-2@m uk-visible@m" style="display: flex; margin-top: -10px;">
@@ -46,7 +46,7 @@
                                 </div>
                             </div>
                             <ul class="uk-switcher uk-margin">
-                                <li class="uk-active">
+                                <li :class="{ 'uk-active': selectedTab === 'live'}">
                                     <stream-box :pageProfile="pageProfile" />
                                     <!-- <hr class="uk-divider-icon"> -->
                                     <!-- <div class="extensions">
@@ -60,10 +60,18 @@
                                         </div>
                                     </div> -->
                                 </li>
-                                <li class="">
+                                <li :class="{ 'uk-active': selectedTab === 'videos'}">
                                     <div class="uk-flex-row uk-grid-small uk-child-width-expand@s" uk-grid>
+                                        <div style="opacity: 0.3" class="uk-width-1-4@m uk-width-1-2@s">
+                                            <video-thumb  :video="{}" />
+                                        </div>
                                         <div class="uk-width-1-4@m uk-width-1-2@s">
-                                            <video-thumb v-if="videos.length" :video="videos[0]" />
+                                            <div style="text-align: center;font-size: 13px;padding-top: 20px;">
+                                              This feature is still in development.<br/>
+                                              Do you want this feature?<br/><br/>
+                                              <button class="uk-button">Yes</button>
+                                              <button class="uk-button">No</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </li>
@@ -89,7 +97,8 @@ import Chat from '../views/chat'
 export default {
   data () {
     return {
-      streamState: ''
+      streamState: '',
+      selectedTab: 'live'
     }
   },
   metaInfo () {

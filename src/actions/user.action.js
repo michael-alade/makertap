@@ -35,14 +35,19 @@ user.signup = ({ commit }, payload) => {
         'Authorization': `Bearer ${res.data.token}`
       }
     })
-    setCookie('mktoken', res.data.token, 60)
     return res
   })
 }
 
+user.verifyEmail = ({ commit }, payload) => {
+  return axios.post('/api/user/email-verify', { i: payload })
+}
+
 user.login = ({ commit }, payload) => {
   return axios.post('/api/user/login', payload).then((res) => {
-    setCookie('mktoken', res.data.token, 60)
+    if (res.data.emailVerified) {
+      setCookie('mktoken', res.data.token, 60)
+    }
     return res
   })
 }
