@@ -66,12 +66,7 @@
                                             <video-thumb  :video="{}" />
                                         </div>
                                         <div class="uk-width-1-4@m uk-width-1-2@s">
-                                            <div style="text-align: center;font-size: 13px;padding-top: 20px;">
-                                              This feature is still in development.<br/>
-                                              Do you want this feature?<br/><br/>
-                                              <button class="uk-button">Yes</button>
-                                              <button class="uk-button">No</button>
-                                            </div>
+                                          <wip feature="videos"/>
                                         </div>
                                     </div>
                                 </li>
@@ -87,6 +82,7 @@
 </template>
 
 <script>
+import Wip from '../views/wip'
 import numberAbbreviate from 'number-abbreviate'
 import VideoThumb from '../views/video-thumb'
 import WelcomeModal from '../views/welcome-modal'
@@ -126,6 +122,7 @@ export default {
   components: {
     VideoThumb,
     Chat,
+    Wip,
     StreamBox,
     WelcomeModal,
     GoLiveModal

@@ -114,6 +114,22 @@ function stopLive (req, res) {
   })
 }
 
+function getFeatured (req, res) {
+  return ChannelSchema.find({
+    featured: true
+  }, (err, channels) => {
+    if (err) {
+      return res.status(500).json({
+        message: 'Server error'
+      })
+    }
+    return res.status(200).json({
+      channels: channels,
+      message: 'success'
+    })
+  })
+}
+
 // /**
 //  * search
 //  * @param {*} req
@@ -171,5 +187,6 @@ function stopLive (req, res) {
 
 module.exports = {
   goLive,
-  stopLive
+  stopLive,
+  getFeatured
 }

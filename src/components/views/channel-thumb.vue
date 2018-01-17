@@ -1,7 +1,8 @@
 <template>
   <div class="featured">
       <div class="featured-avatar uk-cover-container">
-          <img style="width: inherit; height: inherit" class="uk-cover" :src="result && result.channelPicture ? result.channelPicture : null">
+          <img style="width: inherit; height: inherit" class="uk-cover" :src="result && result.channelPicture ? result.channelPicture :
+          `https://avatar.tobi.sh/211.svg?text=${result.user.fullName.split(' ')[0][0]}${result.user.fullName.split(' ')[1][0]}`">
           <div class="uk-overlay uk-position-top">
           </div>
       </div>

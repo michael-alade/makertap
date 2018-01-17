@@ -1,7 +1,7 @@
 <template>
     <div class="">
         <hero />
-        <featured />
+        <featured :channels="channels || []" />
         <footer-view />
         <me/>
     </div>
@@ -19,6 +19,9 @@ export default {
     Me,
     Featured,
     FooterView
+  },
+  preFetch ({ store }) {
+    return store.dispatch('featuredChannel')
   },
   metaInfo: {
     title: 'Makertap',
@@ -38,6 +41,9 @@ export default {
   computed: {
     username () {
       return this.$store.state.currentUser && this.$store.state.currentUser.username || ''
+    },
+    channels () {
+      return this.$store.state.featuredChannels
     }
   }
 }

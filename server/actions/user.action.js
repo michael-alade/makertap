@@ -43,6 +43,7 @@ function signup (req, res) {
         return UserSchema
           .create(body, (err, user) => {
             if (err) {
+              console.log(err, 'err')
               return res.status(409).json({
                 err: err,
                 message: 'Something went wrong'

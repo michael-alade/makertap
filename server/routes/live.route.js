@@ -12,6 +12,10 @@ module.exports = (router) => {
     .post(auth, live.stopLive)
 
   router
+    .route('/featured/channels')
+    .get(live.getFeatured)
+
+  router
     .route('/live/search')
     .get(search.search)
 }

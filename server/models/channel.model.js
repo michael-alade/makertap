@@ -72,6 +72,10 @@ var channel = new Schema({
     type: String,
     default: ''
   },
+  featured: {
+    type: Boolean,
+    default: true
+  },
   userId: {
     type: String
   },

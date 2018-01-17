@@ -17,12 +17,7 @@
                             </div>
                         </div>
                     </div> -->
-                    <div style="text-align: center;font-size: 13px;padding-top: 20px;">
-                                              This feature is still in development.<br/>
-                                              Do you want this feature?<br/><br/>
-                                              <button class="uk-button">Yes</button>
-                                              <button class="uk-button">No</button>
-                                            </div>
+                <wip feature="chat" />
                 </div>
                 <div class="chat-input">
                     <div class="input-box">
@@ -34,6 +29,7 @@
 </template>
 
 <script>
+import Wip from './wip'
 export default {
   data () {
     return {
@@ -42,6 +38,9 @@ export default {
       keys: 6,
       simpleBar: ''
     }
+  },
+  components: {
+    Wip
   },
   created () {
   },
