@@ -12,8 +12,8 @@
                 <div class="uk-container">
                         <ais-results class="uk-flex-row uk-grid-small uk-child-width-expand@s uk-result" uk-grid>
                           <template slot-scope="{ result }">
-                              <div class="uk-width-1-3@m uk-width-1-2@s uk-grid-margin">
-                                <channel-thumb v-if="result && result.channelPicture" :result="result || {}" />
+                              <div v-if="result && result.channelPicture" class="uk-width-1-3@m uk-width-1-2@s uk-grid-margin">
+                                <channel-thumb :result="result || {}" />
                               </div>
                           </template>
                         </ais-results>
