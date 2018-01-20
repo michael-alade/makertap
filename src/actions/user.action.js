@@ -102,7 +102,7 @@ user.channelView = (store, channelId) => {
 }
 
 user.featuredChannel = (store) => {
-  return axios.get('/api//featured/channels').then(res => {
+  return axios.get('/api/featured/channels').then(res => {
     store.state.featuredChannels = res.data.channels
     return res
   })
