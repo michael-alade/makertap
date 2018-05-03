@@ -4,24 +4,8 @@ var customEmails = require('./emails')
 var moment = require('moment')
 
 var sengrid = require('@sendgrid/mail')
-sengrid.setApiKey('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')
-var algolia = algoliasearch('ENDTXRMXJ8', 'c9e07f4492ce146a0e9d16a45c24f54f')
-
-cloudinary.config({
-  cloud_name: 'makertap',
-  api_key: '692474461884365',
-  api_secret: 'oad5-Tra5epp3DFkZLdggL_7LW4'
-})
-
-// const msg = {
-//   from: 'no-reply@makertap.com',
-//   substitutions: {
-//     name: 'Kolawole Alade',
-//     link: 'http://localhost:2000'
-//   },
-//   subject: 'Testing',
-//   html: customEmails['goLive']
-// }
+sengrid.setApiKey(process.env.sendgridApi)
+var algolia = algoliasearch(process.env.algoliaKey, process.env.algoliaSecret)
 
 function uploadFile (file, options, cb) {
   return cloudinary.v2.uploader.upload(file, options, cb)
